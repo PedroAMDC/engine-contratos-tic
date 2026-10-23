@@ -90,3 +90,7 @@ xcopy /E /I instituicao.exemplo instituicao   # troque nomes e logos
 Contratos, textos extraídos, fichas e relatórios ficam em `data/` e `output/`, que **não**
 vão para o repositório. O repositório contém só o código, os prompts, os modelos de
 relatório e exemplos com dados fictícios.
+
+## Licença
+
+[MIT](LICENSE).

@@ -35,7 +35,7 @@ def main(argv=None):
         n = gerar_prompts()
         print(f"{n} arquivo(s) gerado(s) em data/_prompts")
         return 0
-    if not a.orgao:
+    if not a.orgao and a.comando not in ("lotes", "base", "candidatos", "estadual-montar", "infra-lotes", "infra-mapa"):
         p.error("informe a sigla do órgão")
     sigla = a.orgao.upper() if a.comando not in ("preparar", "ocr-complementar", "reprocessar", "lotes", "base", "candidatos", "estadual-validar", "estadual-montar", "infra-lotes", "infra-mapa") else a.orgao
 
