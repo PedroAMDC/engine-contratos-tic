@@ -1,0 +1,30 @@
+{
+  "tema": "Licenciamento e plataformas",
+  "diagnostico": "Dois parágrafos curtos: como está o tema no Estado, o que se repete, onde está o dinheiro.",
+  "contratos_quadro": ["ORG-A-G03", "ORG-B-G06"],
+  "achados": [
+    {
+      "id": "T3-01",
+      "tipo": "Redundância comprovada | Sobreposição provável | Dispersão de preço | Fragmentação | Estrutura paralela {{ P.estatal('a') }} | Oportunidade de ata corporativa | Candidato ao {{ P.datacenter_central.nome }} | Lacuna de governança",
+      "titulo": "Título curto e direto (até 90 caracteres)",
+      "descricao": "Três a cinco frases simples: o que se repete, em quais órgãos, por que importa.",
+      "contratos": ["ORG-A-G03", "ORG-B-G06", "ORG-C-G02"],
+      "economia": {
+        "tipo": "calculada | estimada | não estimada",
+        "valor": 125000.00,
+        "base_calculo": "produtos_repetidos: Autodesk AEC Collection (licença/ano, anual)",
+        "premissa": "Alinhar ao preço mediano pago no Estado para a mesma licença."
+      },
+      "evidencias": [
+        {"contrato": "ORG-A-G03", "doc": "D03", "pagina": 2, "trecho": "trecho literal"},
+        {"contrato": "ORG-B-G06", "doc": "D06", "pagina": 1, "trecho": "trecho literal"}
+      ],
+      "recomendacao": "O que fazer, em uma ou duas frases.",
+      "responsavel": "{{ P.emissor.sigla }} | {{ P.estatal_ti.sigla }} | {{ P.orgao_central.area_aquisicoes }} | Órgãos | {{ P.emissor.sigla }} e {{ P.estatal_ti.sigla }}",
+      "condicao": "O que precisa ser verdade para a medida funcionar.",
+      "janela": "Quando decidir (ex.: vencimentos entre 03/2027 e 08/2027).",
+      "potencial": "Alto | Médio | Baixo",
+      "confianca": "Alta | Média | Baixa"
+    }
+  ]
+}

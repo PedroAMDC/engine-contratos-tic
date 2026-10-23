@@ -1,0 +1,541 @@
+{%- set m = d.meta -%}
+{%- set c = d.calc -%}
+{%- macro rec(r) -%}<span class="badge rec {{ r|slug }}">{{ r|rec_label }}</span>{%- endmacro -%}
+{%- macro prio(p) -%}<span class="prio {{ p }}"><span class="dot {{ p }}"></span> {{ p|prio_label }}</span>{%- endmacro -%}
+{%- macro nivel(n, pos=false) -%}<span class="nivel-t {{ n|slug }}{% if pos %} pos{% endif %}">{{ n }}</span>{%- endmacro -%}
+{%- macro natureza(t) -%}<span class="tag {{ t|slug }}">{{ t }}</span>{%- endmacro -%}
+{%- macro dias(n) -%}
+{%- if n is none -%}<span class="dias ok">—</span>
+{%- elif n < 0 -%}<span class="dias urg">vencido</span>
+{%- elif n <= 120 -%}<span class="dias urg">{{ n }} dias</span>
+{%- elif n <= 240 -%}<span class="dias prox">{{ n }} dias</span>
+{%- else -%}<span class="dias ok">{{ n }} dias</span>{%- endif -%}
+{%- endmacro -%}
+{%- macro cab(sobre, titulo, desc=none) -%}
+<div class="parte-cab"><small>{{ sobre }}</small><h2>{{ titulo }}</h2>{% if desc %}<p>{{ desc }}</p>{% endif %}</div>
+{%- endmacro -%}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{ m.orgao_sigla }} — Diagnóstico dos Contratos de TIC</title>
+<style>
+{{ css|safe }}
+@page { @top-left { content: "{{ m.orgao_sigla }}  ·  Diagnóstico dos Contratos de TIC  ·  ref. {{ m.data_referencia|data }}"; } }
+</style>
+</head>
+<body>
+
+{# ================================================================ CAPA #}
+<section class="capa">
+  <div class="capa-faixa">
+    <img class="logo-faixa" src="{{ P.relatorio.logo_faixa }}" alt="{{ P.relatorio.logo_faixa_alt }}">
+    <div class="emissor">
+      <small>Elaborado pela</small>
+      {{ P.emissor.nome_capa[0] }}<br>{{ P.emissor.nome_capa[1:]|join(" ") }} <b>{{ P.emissor.sigla }}</b>
+    </div>
+  </div>
+  <img class="capa-brasao" src="{{ P.relatorio.brasao }}" alt="">
+  <div class="classificacao">{{ m.classificacao }}</div>
+
+  <div class="capa-meio">
+    <div class="sobre">Diagnóstico estratégico, econômico e tecnológico</div>
+    <h1>Contratos de <b>Tecnologia da Informação<br>e Comunicação</b></h1>
+    <div class="capa-orgao">
+      <div class="sigla">{{ m.orgao_sigla }}</div>
+      <div class="nome">{{ m.orgao_nome }}</div>
+    </div>
+  </div>
+
+  <div class="capa-base">
+    <div><b>Data de referência</b>{{ m.data_referencia|data }}</div>
+    <div><b>Versão</b>{{ m.versao }} · emitida em {{ c.data_emissao|data }}</div>
+    <div><b>Finalidade</b>{{ m.finalidade }}</div>
+  </div>
+  {% if m.modelo %}<div class="marca-modelo">MODELO · DADOS ILUSTRATIVOS</div>{% endif %}
+</section>
+
+{# ================================================================ 1. EM UMA PÁGINA #}
+<section>
+  {{ cab("Síntese executiva", "Principais pontos de atenção") }}
+
+  <div class="manchete">{{ d.resumo.manchete }}</div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="l">Contratos</div><div class="v">{{ c.qtd_contratos }}</div><div class="s">{{ c.qtd_documentos }} documentos lidos</div></div>
+    <div class="kpi"><div class="l">Valor global</div><div class="v">{{ c.valor_total|brl_curto }}</div><div class="s">{% if c.com_anual == c.qtd_contratos %}≈ {{ c.valor_anual|brl_curto }} por ano{% else %}anual calculável em {{ c.com_anual }} de {{ c.qtd_contratos }}{% endif %}</div></div>
+    {% set criticos_prazo = c.vencidos + c.vencem_180 %}
+    <div class="kpi {% if criticos_prazo %}kpi-alerta{% endif %}"><div class="l">{% if c.vencidos %}Vencidos ou a vencer{% else %}Vencem em 180 dias{% endif %}</div><div class="v">{{ criticos_prazo|length }}</div><div class="s">{% if c.vencidos %}{{ c.vencidos|length }} já vencido(s) · {% endif %}{% if criticos_prazo %}{{ criticos_prazo|map(attribute="numero")|map("replace", "/" ~ m.orgao_sigla ~ P.ente.sufixo_numero, "")|join(", ") }}{% else %}nenhum{% endif %}</div></div>
+    <div class="kpi {% if c.alertas_por_nivel.get('Crítico') %}kpi-alerta{% endif %}"><div class="l">Pontos críticos</div><div class="v">{{ c.alertas_por_nivel.get("Crítico", 0) }}</div><div class="s">{{ d.inconsistencias|length }} problemas em documentos</div></div>
+  </div>
+
+  <div class="alertas">
+    {% for a in d.resumo.alertas[:5] %}
+    <div class="alerta {{ a.nivel|slug }}">
+      <div>
+        <div class="nivel">{{ a.nivel }}</div>
+        <div class="tit">{{ a.titulo }}</div>
+        <div class="txt">{{ a.texto }}</div>
+        <div class="acao"><b>Encaminhamento:</b> {{ a.acao }}</div>
+        {% if a.get("fontes_txt") %}<div class="fontes">Fontes: {{ a.fontes_txt|join("; ") }}</div>{% endif %}
+      </div>
+      <div class="lado">
+        <div><div class="l">Contratos</div><div class="v">{{ a.contratos|join(", ") }}</div></div>
+        <div><div class="l">Em jogo</div><div class="v">{{ a.valor_em_jogo }}</div></div>
+        <div><div class="l">Prazo</div><div class="v">{{ a.prazo }}</div></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="parte">
+  {{ cab("Síntese executiva", "Decisões recomendadas", "Deliberações a cargo da alta gestão, em ordem de prioridade.") }}
+  <div class="decisoes">
+    {% for x in d.resumo.decisoes %}
+    <div class="decisao"><div>{{ x.decisao }}</div><div class="c">{{ x.contratos|join(", ") }}</div><div>{{ prio(x.prioridade) }}</div></div>
+    {% endfor %}
+  </div>
+
+  <div class="grid-2" style="margin-top:7mm">
+    <div class="caixa">
+      <h4>Principais riscos</h4>
+      <ul class="lista">{% for r in d.resumo.riscos %}<li>{{ r }}</li>{% endfor %}</ul>
+    </div>
+    <div class="caixa">
+      <h4>Principais oportunidades</h4>
+      <ul class="lista">{% for o in d.resumo.oportunidades %}<li>{{ o }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:8mm">Para onde vai o dinheiro</h3>
+  <div class="grid-2">
+    <div>
+      <h4>Valor global por categoria</h4>
+      <div class="barras">
+        {% for cat in c.categorias %}
+        <div class="barra">
+          <div class="rot">{{ cat.nome }}</div>
+          <div class="trilho"><div class="preenche" style="width: {{ pct(cat.valor, c.max_cat) }}%"></div></div>
+          <div class="val">{{ cat.valor|brl_curto }} <small>{{ cat.pct|round|int }}%</small></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div>
+      <h4>Prioridade de revisão</h4>
+      <div class="empilhada">
+        {% for p, cor in [("P1","var(--crit)"),("P2","var(--aten)"),("P3","var(--ok)")] %}{% if c.prioridades[p] %}<span style="flex: {{ c.prioridades[p] }}; background: {{ cor }}">{{ c.prioridades[p] }}</span>{% endif %}{% endfor %}
+      </div>
+      <div class="legenda"><span><i style="background:var(--crit)"></i>Alta</span><span><i style="background:var(--aten)"></i>Média</span><span><i style="background:var(--ok)"></i>Baixa</span></div>
+      <h4 style="margin-top:5mm">Recomendações</h4>
+      <table>
+        <tbody>
+        {% for r in c.recomendacoes %}<tr><td>{{ rec(r.nome) }}</td><td class="right num">{{ r.qtd }}</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{# ================================================================ 2. MAPA #}
+<section class="parte">
+  {{ cab("Panorama", "Mapa dos contratos", "Todos os contratos em uma tabela, do maior para o menor valor. A cor indica a prioridade de revisão.") }}
+  <table class="mapa">
+    <thead><tr><th style="width:5mm"></th><th style="width:44mm">Contrato</th><th>Avaliação</th><th style="width:30mm" class="right">Valor global</th><th style="width:17mm" class="right">Vence em</th><th style="width:31mm">Recomendação</th></tr></thead>
+    <tbody>
+    {% for k in c.quadro %}
+      <tr>
+        <td><span class="dot {{ k.prioridade }}"></span></td>
+        <td><strong>{{ k.numero }}</strong><br><span class="obj">{{ k.contratada }}</span><br><span class="obj">{{ k.objeto_resumido }}</span></td>
+        <td class="veredito">{{ k.veredito }}</td>
+        <td class="right">
+          <div class="vbar"><span class="num">{{ k.valor_referencia|brl("Não comprovado") }}</span><div class="t"><div class="p" style="width: {{ pct(k.valor_referencia or 0, c.max_valor) }}%"></div></div></div>
+        </td>
+        <td class="right">{{ dias(k.dias_para_fim) }}</td>
+        <td>{{ rec(k.recomendacao) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot><tr><td></td><td colspan="2">Total referencial{% if c.sem_valor %} (sem {{ c.sem_valor|join(", ") }}){% endif %}</td><td class="right num">{{ c.valor_total|brl }}</td><td colspan="2"></td></tr></tfoot>
+  </table>
+  <p class="small muted">A soma é referencial: mistura prazos diferentes e valores máximos estimados. Não é despesa executada nem economia garantida. Valores originais, aditivos e anual equivalente estão no Anexo A.</p>
+  <div class="legenda" style="margin-top:2mm"><span><i style="background:var(--crit)"></i>Prioridade alta</span><span><i style="background:var(--aten)"></i>Média</span><span><i style="background:var(--ok)"></i>Baixa</span></div>
+</section>
+
+{# ================================================================ 3. CONTEXTO #}
+<section class="parte">
+  {% set o = d.orgao %}
+  {{ cab("Contexto", "O órgão e sua dependência de tecnologia") }}
+  <p class="manchete" style="font-size:11pt">{{ o.missao }}</p>
+
+  <div class="grid-2">
+    <div>
+      <h4>Atividades finalísticas</h4>
+      <ul class="lista">{% for x in o.finalisticas %}<li>{{ x }}</li>{% endfor %}</ul>
+      <h4>Atividades de apoio</h4>
+      <ul class="lista">{% for x in o.apoio %}<li>{{ x }}</li>{% endfor %}</ul>
+    </div>
+    <div>
+      <h4>Serviços que dependem de TI</h4>
+      <ul class="lista">{% for x in o.servicos_criticos %}<li>{{ x }}</li>{% endfor %}</ul>
+      <h4>Se a tecnologia parar</h4>
+      <p>{{ o.impacto_interrupcao }}</p>
+    </div>
+  </div>
+
+  <div class="grid-3" style="margin-top:4mm">
+    <div class="caixa tint"><h4>O que é específico do órgão</h4><p>{{ o.necessidades_especificas }}</p></div>
+    <div class="caixa tint"><h4>O que pode ser compartilhado</h4><p>{{ o.compartilhavel }}</p></div>
+    <div class="caixa tint"><h4>Riscos do setor</h4><p>{{ o.riscos_setor }}</p></div>
+  </div>
+
+  <h4 style="margin-top:5mm">Fontes</h4>
+  <ul class="lista small">{% for f in o.fontes %}<li>{{ f }}</li>{% endfor %}</ul>
+  {% if o.limitacoes %}<p class="small muted" style="margin-top:2mm">Limitação: {{ o.limitacoes }}</p>{% endif %}
+</section>
+
+{# ================================================================ 4. SOBREPOSIÇÕES #}
+<section class="parte">
+  {{ cab("Análise cruzada", "Onde os contratos se sobrepõem", "Casos em que dois contratos cobrem o mesmo serviço, usuários ou infraestrutura. Parecer igual não prova duplicidade: cada caso diz se a sobreposição está documentada ou se ainda é uma fronteira a esclarecer.") }}
+
+  {% if c.matriz.contratos %}
+  <table class="matriz">
+    <thead><tr><th class="rot"></th>{% for k in c.matriz.contratos %}<th>{{ k }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for a in c.matriz.contratos %}
+      <tr>
+        <td class="rot forte">{{ a }}</td>
+        {% for b in c.matriz.contratos %}
+          {% set v = c.matriz.celulas.get(a ~ "|" ~ b) %}
+          {% if a == b %}<td class="cel diag"></td>{% elif v %}<td class="cel {{ v|slug }}">{{ v }}</td>{% else %}<td class="cel">—</td>{% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% for s in d.sombreamentos %}
+  <div class="cartao">
+    <div class="cartao-cab">
+      <span class="k">{{ s.contratos|join(" × ") }}</span>
+      <span class="a">{{ s.area }}</span>
+      {{ natureza(s.natureza) }}
+      <span>Sobreposição {{ nivel(s.intensidade) }}</span>
+    </div>
+    <div class="cartao-corpo">
+      <div>{{ s.descricao }}<div class="fonte">Onde está: {{ s.evidencia }}</div></div>
+      <div class="fazer"><b>O que fazer</b>{{ s.encaminhamento }}</div>
+    </div>
+  </div>
+  {% else %}
+  <p class="muted">Nenhuma sobreposição identificada entre os contratos analisados.</p>
+  {% endfor %}
+</section>
+
+{# ================================================================ 5. INCONSISTÊNCIAS #}
+<section class="parte">
+  {{ cab("Análise documental", "Problemas encontrados nos documentos", "Contas que não fecham, datas e números divergentes, cláusulas fora do objeto e lacunas. São pontos para a unidade competente verificar, não irregularidades declaradas.") }}
+  <table>
+    <thead><tr><th style="width:14mm">Gravidade</th><th style="width:24mm">Contrato</th><th>O que está errado</th><th style="width:40mm">Onde está</th><th style="width:34mm">Como resolver</th></tr></thead>
+    <tbody>
+    {% for i in d.inconsistencias %}
+      <tr>
+        <td>{{ nivel(i.gravidade) }}</td>
+        <td class="forte">{{ i.contrato }}</td>
+        <td><strong>{{ i.tipo }}.</strong> {{ i.descricao }}</td>
+        <td class="small muted">{{ i.evidencia }}{% if i.get("trecho") %}<br><span class="citacao">“{{ i.trecho|truncate(140) }}”</span>{% endif %}</td>
+        <td>{{ i.encaminhamento }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="center muted">Nenhum problema documental identificado.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{# ================================================================ 6. FICHAS #}
+{% for k in c.quadro %}
+<section class="ficha" id="{{ k.id }}">
+  <div class="ficha-cab">
+    <div>
+      <div class="ord">Contrato {{ k.ordem }} de {{ c.qtd_contratos }} · {{ k.categoria }}</div>
+      <h3>{{ k.numero }}</h3>
+      <div class="sub">{{ k.contratada }} — {{ k.objeto_resumido }}</div>
+    </div>
+    <div class="valor"><div class="l">Valor global</div><div class="v">{{ k.valor_referencia|brl("Não comprovado") }}</div></div>
+  </div>
+
+  <div class="resumo-ficha">
+    <div class="esq">
+      <div class="veredito">{{ k.veredito }}</div>
+      <b class="t">O que fazer</b>
+      <ol>{% for x in k.o_que_fazer %}<li>{{ x }}</li>{% endfor %}</ol>
+    </div>
+    <div class="dir">
+      <div><div class="l">Recomendação</div><div class="v">{{ rec(k.recomendacao) }}</div></div>
+      <div><div class="l">Prioridade</div><div class="v">{{ prio(k.prioridade) }}</div></div>
+      <div><div class="l">Necessidade</div><div class="v">{{ k.necessidade }}</div></div>
+      <div><div class="l">Potencial de economia</div><div class="v">{{ nivel(k.potencial_economia, true) }}</div></div>
+      <div><div class="l">Confiança do diagnóstico</div><div class="v">{{ nivel(k.confianca, true) }}</div></div>
+      <div><div class="l">Vence em</div><div class="v">{{ dias(k.dias_para_fim) }}</div></div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h4>Análise</h4>
+    <p>{{ k.missao }}</p>
+    <div class="evid">
+      {% for e in k.diagnostico %}
+      <div><span>{{ natureza(e.natureza) }}</span><span>{{ e.texto }}{% if e.fonte %} <span class="fonte">— {{ e.fonte }}</span>{% endif %}</span></div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h4>Perguntas ao órgão</h4>
+    <ol class="perguntas">{% for q in k.questionamentos %}<li>{{ q }}</li>{% endfor %}</ol>
+  </div>
+
+  {% set r = k.racionalizacao %}
+  <div class="bloco">
+    <h4>Se a medida for adotada</h4>
+    <div class="tres">
+      <div><div class="l">Benefício esperado</div>{{ r.beneficios }}</div>
+      <div><div class="l">Condições</div>{{ r.condicoes }}</div>
+      <div><div class="l">Riscos a controlar</div>{{ r.riscos }}</div>
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h4>Alternativas corporativas</h4>
+    <div class="tres">
+      {% for chave, titulo in [("compartilhamento","Compartilhar com outros órgãos"),("estatal_ti","Atendimento " ~ P.estatal("por")),("datacenter",P.datacenter_central.nome)] %}
+      {% set x = k.corporativo[chave] %}
+      <div><div class="l">{{ titulo }}</div>{{ nivel(x.nivel, true) }} — {{ x.justificativa }}</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="bloco">
+    <h4>Ficha técnica</h4>
+    <dl class="tecnica">
+      <dt>Contratada</dt><dd>{{ k.contratada }}{% if k.cnpj %} · CNPJ {{ k.cnpj }}{% endif %}</dd>
+      <dt>Objeto</dt><dd>{{ k.objeto }}</dd>
+      <dt>Valores</dt><dd>Original {{ k.valor_original|brl }} · Atualizado {{ k.valor_atualizado|brl("sem alteração") }}{% if k.valor_mensal %} · Mensal {{ k.valor_mensal|brl }}{% endif %}{% if k.valor_anual %} · Anual {{ k.valor_anual|brl }}{% endif %}</dd>
+      <dt>Vigência</dt><dd>{{ k.vigencia_inicio|data }} a {{ k.vigencia_fim|data }} ({{ k.prazo }}) · Prorrogação: {{ k.prorrogacao }}</dd>
+      <dt>Quantidades</dt><dd>{{ k.quantitativos|join(" · ") }}</dd>
+      <dt>Nível de serviço</dt><dd>{{ k.sla }}</dd>
+      <dt>Alteração e saída</dt><dd>{{ k.condicoes_alteracao }}</dd>
+      <dt>Documentos</dt><dd class="small">{% for doc in k.documentos %}{{ doc.arquivo }} <span class="muted">({{ doc.tipo }}, {{ doc.paginas }} p.)</span>{% if not loop.last %}<br>{% endif %}{% endfor %}</dd>
+    </dl>
+  </div>
+
+  <div class="proxima"><b>Próxima providência</b>{{ r.proximo_passo }}</div>
+</section>
+{% endfor %}
+
+{# ================================================================ 7. CORPORATIVO #}
+<section class="parte">
+  {{ cab("Visão de Governo", "Oportunidades de consolidação corporativa", "Serviços que podem ser padronizados, centralizados ou compartilhados com outros órgãos. São hipóteses: sem documentos de outros órgãos, nenhuma duplicidade no Governo é afirmada.") }}
+  {% for o in d.consolidacao %}
+  <div class="cartao">
+    <div class="cartao-cab"><span class="k">{{ o.servico }}</span><span class="a">{{ o.contratos|join(", ") }} · {{ o.categoria }}</span></div>
+    <div class="cartao-corpo">
+      <div>
+        {{ o.oportunidade }}
+        <div class="fonte">Benefício: {{ o.beneficio }} · Papel {{ P.estatal("de") }}: {{ o.papel_estatal_ti }} · Data Center: {{ o.relacao_dc }}</div>
+      </div>
+      <div class="fazer"><b>Condição</b>{{ o.condicao }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+
+{# ================================================================ 8. PLANO #}
+<section class="parte">
+  {{ cab("Execução", "Plano de ação e prazos") }}
+
+  {% if c.vencidos %}
+  <p><strong class="dias urg">{{ c.vencidos|length }} contrato(s) com vigência já encerrada nos documentos:</strong> {% for k in c.vencidos %}{{ k.numero }} (desde {{ k.vigencia_fim|data }}){% if not loop.last %}; {% endif %}{% endfor %}.</p>
+  {% endif %}
+  <h4>Quando cada contrato vence (próximos 24 meses)</h4>
+  <div class="timeline">
+    {% for k in c.vencimentos if 0 <= k.dias_para_fim <= 730 %}
+    <div class="tl">
+      <div class="forte">{{ k.numero }}</div>
+      <div class="trilho"><div class="zona" style="width: {{ (180/730*100)|round(1) }}%"></div><div class="marca {{ k.prioridade }}" style="left: {{ [[k.dias_para_fim, 0]|max / 730 * 100, 100]|min|round(1) }}%"></div></div>
+      <div class="small">{{ k.vigencia_fim|data }} · {{ dias(k.dias_para_fim) }}</div>
+    </div>
+    {% endfor %}
+    <div class="tl-eixo"><div></div><div class="e"><span>hoje</span><span>6 meses</span><span>12 meses</span><span>18 meses</span><span>24 meses</span></div><div></div></div>
+  </div>
+  <p class="small muted">Faixa vermelha: próximos 180 dias. Contratos ali precisam de decisão sobre prorrogação ou nova contratação.</p>
+
+  {% for h, titulo, desc in [("curto","Curto prazo","até 90 dias"),("medio","Médio prazo","3 a 12 meses"),("longo","Longo prazo","acima de 12 meses")] %}
+  {% set acoes = d.plano_acao|selectattr("horizonte","equalto",h)|list %}
+  {% if acoes %}
+  <div class="horizonte">
+    <div class="horizonte-cab"><b>{{ titulo }}</b><span>{{ desc }}</span></div>
+    <table>
+      <thead><tr><th style="width:16mm">Prioridade</th><th style="width:23mm">Contrato</th><th>O que fazer</th><th style="width:30mm">Quem</th><th style="width:34mm">Precisa de</th><th style="width:20mm">Até</th></tr></thead>
+      <tbody>
+      {% for a in acoes|sort(attribute="prioridade") %}
+        <tr><td>{{ prio(a.prioridade) }}</td><td class="forte">{{ a.contrato }}</td><td>{{ a.acao }}</td><td class="small">{{ a.responsavel }}</td><td class="small">{{ a.evidencia }}</td><td class="small">{{ a.prazo }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endfor %}
+</section>
+
+{# ================================================================ 9. CONCLUSÃO #}
+<section class="parte">
+  {{ cab("Conclusão", "Respostas para a alta gestão") }}
+  <div class="qa">
+    {% for x in d.conclusao.respostas %}
+    <div class="q"><div class="p"><span>{{ loop.index }}</span>{{ x.pergunta }}</div><div class="r">{{ x.resposta }}</div></div>
+    {% endfor %}
+  </div>
+  <div class="sintese">
+    <b class="t">SÍNTESE</b>
+    {% for p in d.conclusao.sintese %}<p>{{ p }}</p>{% endfor %}
+  </div>
+</section>
+
+{# ================================================================ ANEXOS #}
+<section class="parte">
+  {{ cab("Anexo A", "Valores e vigências detalhados") }}
+  <table>
+    <thead><tr><th style="width:24mm">Contrato</th><th>Categoria</th><th class="right">Original</th><th class="right">Atualizado</th><th class="right">Anual equiv.</th><th style="width:36mm">Vigência</th></tr></thead>
+    <tbody>
+    {% for k in c.quadro %}
+      <tr>
+        <td class="forte">{{ k.numero }}</td><td>{{ k.categoria }}</td>
+        <td class="right num">{{ k.valor_original|brl("—") }}</td>
+        <td class="right num">{{ k.valor_atualizado|brl("—") }}</td>
+        <td class="right num">{{ k.valor_anual|brl("—") }}</td>
+        <td class="small">{{ k.vigencia_inicio|data("—") }} a {{ k.vigencia_fim|data("—") }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small muted">Original: valor na assinatura. Atualizado: após aditivos de acréscimo, supressão e reajuste. Anual equivalente: só quando informado ou calculável sem premissas não comprovadas.</p>
+
+  <h3>Anexo B · Inventário documental</h3>
+  <p class="small">Todos os arquivos recebidos, inclusive os que não puderam ser aproveitados, para garantir que nenhum contrato ficou de fora. As citações de fonte no relatório usam o código (ex.: “D02 · p. 5” = documento D02, página 5).</p>
+  <table>
+    <thead><tr><th style="width:9mm">Cód.</th><th>Arquivo</th><th style="width:24mm">Contrato</th><th style="width:22mm">Tipo</th><th style="width:9mm" class="right">Pág.</th><th style="width:22mm">Situação</th><th style="width:32mm">Observação</th></tr></thead>
+    <tbody>
+    {% for f in d.inventario %}
+      <tr>
+        <td class="forte">{{ f.get("codigo") or loop.index }}</td><td class="small">{{ f.arquivo }}</td><td>{{ f.contrato or "—" }}</td><td class="small">{{ f.tipo }}</td><td class="right num">{{ f.paginas }}</td>
+        <td>{% if f.situacao == "Analisado" %}<span class="prio P3">{{ f.situacao }}</span>{% else %}<span class="prio P1">{{ f.situacao }}</span>{% endif %}</td>
+        <td class="small">{{ f.obs or "" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if d.get("evidencias") %}
+<section class="parte">
+  {{ cab("Anexo C", "Quadro de evidências", "Todas as citações do relatório, com o trecho literal do documento. Cada referência (E001, E002…) remete a documento, página e linha do texto da página; o trecho pode ser localizado no PDF original por busca textual.") }}
+  <table class="evidencias">
+    <thead><tr><th style="width:11mm">Ref.</th><th style="width:30mm">Local</th><th>Trecho literal</th><th style="width:46mm">Usado em</th></tr></thead>
+    <tbody>
+    {% for e in d.evidencias %}
+      <tr>
+        <td class="forte">{{ e.id }}</td>
+        <td class="small">{{ e.local }}<br><span class="muted">{{ e.documento|truncate(48) }}</span></td>
+        <td class="citacao">“{{ e.trecho }}”{% if e.conferido == "aproximado" %} <span class="muted">(correspondência aproximada, OCR)</span>{% endif %}</td>
+        <td class="small">{{ e.usos|join("; ") }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small muted">Linhas: contagem das linhas com texto da página, de cima para baixo, incluindo cabeçalho. Em páginas digitalizadas (OCR), a linha corresponde a um parágrafo reconhecido. “Tabela” indica trecho localizado em tabela da página.</p>
+</section>
+{% endif %}
+
+<section class="parte">
+  {{ cab("Anexo D", "Documentos que faltam", "Informações necessárias para confirmar ou corrigir diagnósticos de confiança média ou baixa.") }}
+  <table>
+    <thead><tr><th style="width:24mm">Contrato</th><th>Documento ou informação</th><th>Para quê</th></tr></thead>
+    <tbody>
+    {% for s in d.documentos_solicitados %}
+      <tr><td class="forte">{{ s.contrato }}</td><td>{{ s.documento }}</td><td>{{ s.finalidade }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if c.glossario %}
+  <h3>Anexo E · Glossário</h3>
+  <dl class="glossario">
+    {% for g in c.glossario %}<dt>{{ g.termo }}</dt><dd>{{ g.def }}</dd>{% endfor %}
+  </dl>
+  {% endif %}
+</section>
+
+<section class="parte">
+  {{ cab("Anexo F", "Como este relatório foi feito") }}
+  <p>{{ m.objetivo }}</p>
+  <div class="grid-2" style="margin-top:3mm">
+    <div class="caixa tint">
+      <h4>Escopo</h4>
+      <ul class="lista">
+        <li>{{ c.qtd_documentos }} documentos recebidos, referentes a {{ c.qtd_contratos }} contratos de TIC.</li>
+        <li>Aditivos e apostilamentos foram agrupados com o contrato de origem e não contam como contratos novos.</li>
+        <li>Data de referência: {{ m.data_referencia|data }}.</li>
+      </ul>
+    </div>
+    <div class="caixa tint">
+      <h4>Método</h4>
+      <ul class="lista">
+        <li>Inventário de todos os arquivos.</li>
+        <li>Leitura integral do texto, com registro de arquivo e página.</li>
+        <li>Análise de cada contrato e comparação entre eles.</li>
+        <li>Consolidação à luz da missão do órgão, {{ P.estatal("de") }} e do {{ P.datacenter_central.nome }}.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Verificação dos fatos</h3>
+  <ul class="lista">
+    <li><strong>Verificação automática:</strong> cada citação ({{ (d.get("evidencias") or [])|length }} no total, Anexo C) foi localizada no texto extraído do documento indicado, com correção automática da página quando necessário; somas e produtos das planilhas de preços foram recalculados.</li>
+    {% if d.get("checagem") %}
+    <li><strong>Checagem independente:</strong> {{ d.checagem.total }} afirmações da síntese, das sobreposições e das conclusões foram conferidas contra os documentos por revisor distinto do autor da análise{% if d.checagem.data %}, em {{ d.checagem.data|data }}{% endif %}: {{ d.checagem.confirmadas }} confirmadas{% if d.checagem.corrigidas %}, {{ d.checagem.corrigidas }} corrigidas{% endif %}{% if d.checagem.removidas %}, {{ d.checagem.removidas }} removidas{% endif %}.</li>
+    {% endif %}
+    <li>Afirmações classificadas como inferência ou hipótese dependem de confirmação e não constituem conclusão.</li>
+  </ul>
+
+  <h3>Como ler as classificações</h3>
+  <div class="legendas">
+    <dl>
+      <dt>{{ prio("P1") }}</dt><dd>Oportunidade relevante, decisão próxima ou risco significativo.</dd>
+      <dt>{{ prio("P2") }}</dt><dd>Potencial concreto de otimização que pede estudo adicional.</dd>
+      <dt>{{ prio("P3") }}</dt><dd>Manter sob monitoramento regular.</dd>
+    </dl>
+    <dl>
+      <dt>{{ natureza("Fato") }}</dt><dd>Está escrito nos documentos, com arquivo e página.</dd>
+      <dt>{{ natureza("Inferência") }}</dt><dd>Conclusão técnica apoiada em evidências parciais.</dd>
+      <dt>{{ natureza("Hipótese") }}</dt><dd>Depende de confirmação do órgão, da área técnica ou financeira.</dd>
+    </dl>
+  </div>
+
+  <h3>Base normativa considerada</h3>
+  <ul class="lista">{% for n in d.base_normativa %}<li>{{ n }}</li>{% endfor %}</ul>
+
+  <div class="ressalva">Este diagnóstico é preparatório. Não substitui parecer jurídico, estudo técnico preliminar, pesquisa de preços nem a avaliação da equipe gestora. Medidas propostas são gerenciais; qualquer alteração ou extinção contratual depende de análise jurídica própria.</div>
+
+  <img src="{{ P.relatorio.logo_faixa }}" alt="" style="height:12mm; margin-top:10mm">
+  <div class="assinatura" style="margin-top:6mm">
+    <div>{{ P.emissor_completo }}<br><span class="muted">Elaboração</span></div>
+    <div>Gestor(a) responsável<br><span class="muted">Validação</span></div>
+  </div>
+</section>
+
+</body>
+</html>

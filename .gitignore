@@ -1,0 +1,25 @@
+# Contratos e dados sensíveis não devem ir para o repo
+data/
+contratos/
+output/
+*.pdf
+*.docx
+
+# Segredos
+.env
+*.env
+!.env.exemplo
+
+# Configuração local do editor/assistente
+.claude/
+PROMPT MESTRE.txt
+credentials*.json
+token*.json
+
+# Python / Node
+__pycache__/
+.venv/
+node_modules/
+
+# Perfil real da instituição (nomes e logos); o exemplo fica em instituicao.exemplo/
+instituicao/

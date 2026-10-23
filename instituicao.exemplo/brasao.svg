@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 230" width="200" height="230">
+  <path d="M100 8 L188 40 V112 C188 168 150 205 100 222 C50 205 12 168 12 112 V40 Z" fill="#ffffff" fill-opacity=".10" stroke="#c9a34a" stroke-width="6"/>
+  <path d="M100 38 L160 60 V112 C160 150 135 176 100 190 C65 176 40 150 40 112 V60 Z" fill="none" stroke="#c9a34a" stroke-width="3" stroke-opacity=".7"/>
+  <text x="100" y="128" font-family="Georgia, serif" font-size="44" font-weight="bold" fill="#c9a34a" text-anchor="middle">EX</text>
+</svg>

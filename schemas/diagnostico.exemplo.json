@@ -1,0 +1,42 @@
+{
+  "manchete": "Uma ou duas frases: como está a TIC do órgão e o que precisa de decisão.",
+  "pontos_atencao": [
+    {
+      "nivel": "Crítico | Atenção | Informativo",
+      "titulo": "Título curto e direto",
+      "texto": "Duas ou três frases simples, com os números exatos.",
+      "contratos": ["023/2023/ORG{{ P.ente.sufixo_numero }}"],
+      "valor_em_jogo": "R$ 5,5 mi | a medir | risco de interrupção",
+      "encaminhamento": "O que fazer, em uma frase.",
+      "fontes": [{"doc": "D01", "pagina": 4, "trecho": "trecho literal do documento"}]
+    }
+  ],
+  "decisoes": [
+    {"decisao": "O que a gestão precisa decidir.", "contratos": ["023/2023/ORG{{ P.ente.sufixo_numero }}"], "prioridade": "P1"}
+  ],
+  "governanca": {
+    "estatal_ti": {"leitura": "O que já é prestado {{ P.estatal('por') }} e o que poderia ser.", "contratos": ["023/2023/ORG{{ P.ente.sufixo_numero }}"]},
+    "datacenter": {"leitura": "O que deve ser reavaliado com o {{ P.datacenter_central.nome }}.", "contratos": []},
+    "compartilhamento": {"leitura": "O que é comum a outros órgãos e poderia ser corporativo.", "contratos": []}
+  },
+  "sobreposicoes": [
+    {"contratos": ["A", "B"], "descricao": "O que se sobrepõe e por que importa.", "encaminhamento": "O que fazer.",
+     "fontes": [{"doc": "D01", "pagina": 2, "trecho": "trecho literal"}]}
+  ],
+  "contratos": [
+    {
+      "grupo": "G01",
+      "leitura": "Uma frase para o quadro geral.",
+      "diagnostico": "Duas ou três frases: necessidade, dimensionamento, custo, risco.",
+      "encaminhamento": "Medida recomendada, em uma frase.",
+      "perguntas": ["Pergunta específica ao órgão?", "Outra pergunta?"],
+      "fontes": [{"doc": "D04", "pagina": 2, "trecho": "trecho literal"}]
+    }
+  ],
+  "plano": [
+    {"prioridade": "P1", "contrato": "023/2023/ORG{{ P.ente.sufixo_numero }}", "acao": "Ação concreta.", "responsavel": "Unidade", "prazo": "30 dias"}
+  ],
+  "perguntas_dirigente": ["Pergunta estratégica ao dirigente do órgão?"],
+  "documentos_faltantes": [{"documento": "Aditivos de prorrogação", "finalidade": "Confirmar a vigência"}],
+  "conclusao": "Um parágrafo de fechamento para a alta gestão."
+}

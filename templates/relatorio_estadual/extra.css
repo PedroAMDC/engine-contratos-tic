@@ -1,0 +1,23 @@
+/* Resumo executivo estadual */
+section.fluxo { margin-top: 9mm; }
+
+.achado-est {
+  border: .6pt solid var(--line); border-left: 1.6mm solid var(--info);
+  border-radius: 1.4mm; padding: 2.8mm 4mm; margin-bottom: 3mm; break-inside: avoid; font-size: 8.6pt;
+}
+.achado-est.alto { border-left-color: var(--crit); }
+.achado-est.medio { border-left-color: var(--aten); }
+.achado-est p { margin: 1mm 0; }
+.achado-est p b { color: var(--navy); }
+.ae-cab { display: flex; gap: 3mm; align-items: baseline; font-size: 7pt; color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+.ae-id { color: var(--gold); }
+.ae-pot { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 600; }
+.ae-tit { font-size: 10.4pt; font-weight: 600; color: var(--ink); margin: .6mm 0 1mm; }
+.ae-corpo { display: grid; grid-template-columns: 1fr 46mm; gap: 4mm; }
+.ae-lado { border-left: .6pt solid var(--line); padding-left: 3mm; display: grid; gap: 1.4mm; align-content: start; font-size: 8pt; }
+.ae-lado .l { font-size: 6.4pt; color: var(--ink-3); text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
+.ae-lado .v { font-weight: 600; }
+
+table.mapa-calor td, table.mapa-calor th { padding: 1.2mm 1.6mm; font-size: 7.2pt; }
+table.mapa-calor td.cal { border-bottom: .5pt solid #fff; }
+table.top td { vertical-align: middle; }

@@ -1,0 +1,70 @@
+{
+  "orgao_pasta": "ORG-A",
+  "orgao_contratante": "ORG-B",
+  "grupos": ["G03", "G07"],
+  "documentos": ["D03", "D09"],
+  "observacoes_documentos": ["D09 é cópia do D03.", "Pasta do órgão A, mas o contrato foi assinado pelo órgão B."],
+
+  "numero": "216/2025/ORG-B",
+  "contratada": "Razão Social Ltda.",
+  "cnpj": "00.000.000/0001-00",
+  "modalidade": "Pregão eletrônico | Adesão a ata | Dispensa | Inexigibilidade | Termo de adesão | Outro",
+  "ata": {"numero": "005/2024", "orgao_gerenciador": "{{ P.orgao_central.sigla }}"},
+
+  "macrocategoria": "Licenciamento e plataformas",
+  "subcategoria": "Design, engenharia e CAD",
+  "objeto_resumido": "Licenças Autodesk AEC Collection",
+  "objeto": "Texto do objeto como no contrato.",
+
+  "valor_original": 120000.00,
+  "valor_atualizado": null,
+  "valor_anual": 60000.00,
+  "base_valor_anual": "Valor global de 24 meses ÷ 2.",
+  "vigencia_inicio": "2025-03-01",
+  "vigencia_fim": "2027-02-28",
+  "situacao": "Vigente | Vencido nos documentos | Indeterminada",
+
+  "estatal_ti": {"envolvida": false, "papel": "Contratada | Intermediária | Integradora | Nenhum"},
+
+  "itens": [
+    {
+      "descricao": "Licença Autodesk AEC Collection, assinatura anual",
+      "produto": "Autodesk AEC Collection",
+      "fabricante": "Autodesk",
+      "metrica": "licença/ano",
+      "quantidade": 10,
+      "valor_unitario": 12000.00,
+      "valor_total": 120000.00,
+      "periodicidade": "global",
+      "fonte": {"doc": "D03", "pagina": 2, "trecho": "trecho literal da tabela de preços"}
+    }
+  ],
+
+  "desenvolvimento": null,
+  "desenvolvimento_exemplo": {
+    "metrica": "UST | PF | HST | horas | outro",
+    "quantidade": 30250,
+    "valor_unitario": 160.00,
+    "catalogo_de_servicos": true,
+    "sistemas_alvo": ["Sistema de fiscalização"],
+    "fonte": {"doc": "D01", "pagina": 2, "trecho": "trecho literal"}
+  },
+
+  "nuvem": null,
+  "nuvem_exemplo": {
+    "provedor": "Oracle (via {{ P.estatal_ti.sigla }}) | AWS | Azure | Google | {{ P.estatal_ti.sigla }} | outro",
+    "modelo": "IaaS | PaaS | SaaS | Nuvem privada | Colocation",
+    "broker": false,
+    "capacidade": "120 vCPU, 480 GB RAM, 40 TB",
+    "fonte": {"doc": "D01", "pagina": 5, "trecho": "trecho literal"}
+  },
+
+  "temas": ["licenças CAD", "BIM"],
+
+  "fontes_campos": {
+    "contratada": {"doc": "D03", "pagina": 1, "trecho": "trecho literal"},
+    "valor_original": {"doc": "D03", "pagina": 3, "trecho": "trecho literal"},
+    "vigencia_fim": {"doc": "D03", "pagina": 4, "trecho": "trecho literal"},
+    "objeto": {"doc": "D03", "pagina": 1, "trecho": "trecho literal"}
+  }
+}

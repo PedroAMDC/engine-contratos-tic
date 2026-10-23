@@ -1,0 +1,228 @@
+{%- set m = d.meta -%}
+{%- set c = d.calc -%}
+{%- macro rec(r) -%}<span class="badge rec {{ r|slug }}">{{ r|rec_label }}</span>{%- endmacro -%}
+{%- macro prio(p) -%}<span class="prio {{ p }}"><span class="dot {{ p }}"></span> {{ p|prio_label }}</span>{%- endmacro -%}
+{%- macro nivel(n) -%}<span class="nivel-t {{ n|slug }} pos">{{ n }}</span>{%- endmacro -%}
+{%- macro dias(n) -%}
+{%- if n is none -%}<span class="dias ok">—</span>
+{%- elif n < 0 -%}<span class="dias urg">vencido</span>
+{%- elif n <= 120 -%}<span class="dias urg">{{ n }} dias</span>
+{%- elif n <= 240 -%}<span class="dias prox">{{ n }} dias</span>
+{%- else -%}<span class="dias ok">{{ n }} dias</span>{%- endif -%}
+{%- endmacro -%}
+{%- macro cab(sobre, titulo, desc=none) -%}
+<div class="parte-cab"><small>{{ sobre }}</small><h2>{{ titulo }}</h2>{% if desc %}<p>{{ desc }}</p>{% endif %}</div>
+{%- endmacro -%}
+{%- macro curto(num) -%}{{ num|replace("/" ~ m.orgao_sigla ~ P.ente.sufixo_numero, "") }}{%- endmacro -%}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{ m.orgao_sigla }} — Diagnóstico de TIC</title>
+<style>
+{{ css|safe }}
+@page { @top-left { content: "{{ m.orgao_sigla }}  ·  Diagnóstico de TIC  ·  ref. {{ m.data_referencia|data }}"; } }
+</style>
+</head>
+<body>
+
+{# ================================================================ CAPA #}
+<section class="capa">
+  <div class="capa-faixa">
+    <img class="logo-faixa" src="{{ P.relatorio.logo_faixa }}" alt="{{ P.relatorio.logo_faixa_alt }}">
+    <div class="emissor"><small>Elaborado pela</small>{{ P.emissor.nome_capa[0] }}<br>{{ P.emissor.nome_capa[1:]|join(" ") }} <b>{{ P.emissor.sigla }}</b></div>
+  </div>
+  <img class="capa-brasao" src="{{ P.relatorio.brasao }}" alt="">
+  <div class="classificacao">{{ m.classificacao }}</div>
+  <div class="capa-meio">
+    <div class="sobre">Governança digital · custos · oportunidades corporativas</div>
+    <h1>Diagnóstico dos <b>contratos de TIC</b></h1>
+    <div class="capa-orgao">
+      <div class="sigla">{{ m.orgao_sigla }}</div>
+      <div class="nome">{{ m.orgao_nome }}</div>
+    </div>
+  </div>
+  <div class="capa-base">
+    <div><b>Data de referência</b>{{ m.data_referencia|data }}</div>
+    <div><b>Versão</b>{{ m.versao }} · emitida em {{ c.data_emissao|data }}</div>
+    <div><b>Finalidade</b>{{ m.finalidade }}</div>
+  </div>
+</section>
+
+{# ================================================================ SÍNTESE #}
+<section>
+  {{ cab("Síntese", "Principais pontos de atenção") }}
+  <div class="manchete">{{ d.resumo.manchete }}</div>
+
+  {% set criticos_prazo = c.vencidos + c.vencem_180 %}
+  <div class="kpis">
+    <div class="kpi"><div class="l">Contratos</div><div class="v">{{ c.qtd_contratos }}</div><div class="s">{{ c.qtd_documentos }} documentos lidos</div></div>
+    <div class="kpi"><div class="l">Valor global</div><div class="v">{{ c.valor_total|brl_curto }}</div><div class="s">{% if c.com_anual == c.qtd_contratos %}≈ {{ c.valor_anual|brl_curto }} por ano{% else %}soma dos contratos{% endif %}</div></div>
+    <div class="kpi {% if criticos_prazo %}kpi-alerta{% endif %}"><div class="l">{% if c.vencidos %}Vencidos ou a vencer{% else %}Vencem em 6 meses{% endif %}</div><div class="v">{{ criticos_prazo|length }}</div><div class="s">{% if criticos_prazo %}{% for k in criticos_prazo %}{{ curto(k.numero) }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}nenhum{% endif %}</div></div>
+    <div class="kpi"><div class="l">Prioridade alta</div><div class="v">{{ c.prioridades.P1 }}</div><div class="s">de {{ c.qtd_contratos }} contratos</div></div>
+  </div>
+
+  <div class="alertas">
+    {% for a in d.resumo.alertas %}
+    <div class="alerta compacto {{ a.nivel|slug }}">
+      <div>
+        <div class="nivel">{{ a.nivel }}</div>
+        <div class="tit">{{ a.titulo }}</div>
+        <div class="txt">{{ a.texto }}</div>
+        <div class="acao"><b>Encaminhamento:</b> {{ a.acao }}</div>
+      </div>
+      <div class="lado">
+        <div><div class="l">Contratos</div><div class="v">{% for k in a.contratos %}{{ curto(k) }}{% if not loop.last %}, {% endif %}{% endfor %}</div></div>
+        <div><div class="l">Em jogo</div><div class="v">{{ a.valor_em_jogo }}</div></div>
+        {% if a.fontes_txt %}<div><div class="l">Base</div><div class="v small">{% for f in a.fontes_txt %}{{ f.split(" · ")[0] }}{% if not loop.last %}, {% endif %}{% endfor %}</div></div>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ================================================================ DECISÕES + GOVERNANÇA #}
+<section class="fluxo">
+  {{ cab("Síntese", "Decisões recomendadas") }}
+  <div class="decisoes">
+    {% for x in d.resumo.decisoes %}
+    <div class="decisao"><div>{{ x.decisao }}</div><div class="c">{% for k in x.contratos %}{{ curto(k) }}{% if not loop.last %}, {% endif %}{% endfor %}</div><div>{{ prio(x.prioridade) }}</div></div>
+    {% endfor %}
+  </div>
+
+  <h3 style="margin-top:7mm">Visão de governança digital</h3>
+  <div class="gov">
+    {% for chave, titulo, campo in [("estatal_ti",P.estatal_ti.sigla,"estatal_ti"),("datacenter",P.datacenter_central.nome,"datacenter"),("compartilhamento","Compartilhamento entre órgãos","compartilhamento")] %}
+    {% set g = d.governanca.get(chave, {}) %}
+    <div class="caixa">
+      <h4>{{ titulo }}</h4>
+      <p>{{ g.get("leitura", "") }}</p>
+      <div class="gov-lista">
+        {% for k in c.quadro if k.corporativo[campo].nivel in ("Alto", "Médio") or k.numero in g.get("contratos", []) %}
+        <div><span class="nivel-t {{ k.corporativo[campo].nivel|slug }} pos">{{ k.corporativo[campo].nivel }}</span> {{ curto(k.numero) }} <span class="muted">· {{ k.objeto_resumido }}</span></div>
+        {% else %}
+        <div class="muted small">Sem oportunidade relevante identificada.</div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if d.sobreposicoes %}
+  <h3>Sobreposições entre contratos</h3>
+  {% for s in d.sobreposicoes %}
+  <div class="sobrep">
+    <b>{% for k in s.contratos %}{{ curto(k) }}{% if not loop.last %} × {% endif %}{% endfor %}</b> — {{ s.descricao }}
+    <span class="muted">Encaminhamento: {{ s.encaminhamento }}{% if s.fontes_txt %} · Base: {% for f in s.fontes_txt %}{{ f.split(" · ")[0] }}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</span>
+  </div>
+  {% endfor %}
+  {% endif %}
+</section>
+
+{# ================================================================ QUADRO #}
+<section class="parte">
+  {{ cab("Panorama", "Quadro dos contratos", "Do maior para o menor valor. A cor indica a prioridade de revisão.") }}
+  <table class="mapa">
+    <thead><tr><th style="width:4mm"></th><th style="width:38mm">Contrato</th><th>Leitura</th><th style="width:27mm" class="right">Valor global</th><th style="width:16mm" class="right">Vence em</th><th style="width:30mm">Encaminhamento</th></tr></thead>
+    <tbody>
+    {% for k in c.quadro %}
+      <tr>
+        <td><span class="dot {{ k.prioridade }}"></span></td>
+        <td><strong>{{ curto(k.numero) }}</strong><br><span class="obj">{{ k.contratada|truncate(48) }}</span><br><span class="obj">{{ k.objeto_resumido }}</span></td>
+        <td class="veredito">{{ k.leitura }}</td>
+        <td class="right num">{{ k.valor_referencia|brl("Não comprovado") }}</td>
+        <td class="right">{{ dias(k.dias_para_fim) }}</td>
+        <td>{{ rec(k.recomendacao) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot><tr><td></td><td colspan="2">Total{% if c.sem_valor %} (sem {{ c.sem_valor|join(", ") }}){% endif %}</td><td class="right num">{{ c.valor_total|brl }}</td><td colspan="2"></td></tr></tfoot>
+  </table>
+  <p class="small muted">O total soma valores globais de prazos diferentes; não é despesa anual nem economia garantida.</p>
+
+  <h4 style="margin-top:4mm">Valor por categoria</h4>
+  <div class="barras">
+    {% for cat in c.categorias %}
+    <div class="barra"><div class="rot">{{ cat.nome }}</div><div class="trilho"><div class="preenche" style="width: {{ pct(cat.valor, c.max_cat) }}%"></div></div><div class="val">{{ cat.valor|brl_curto }} <small>{{ cat.pct|round|int }}%</small></div></div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ================================================================ FICHAS #}
+<section class="parte">
+  {{ cab("Contrato por contrato", "Fichas de diligência", "Diagnóstico, encaminhamento e perguntas ao órgão para cada contrato." ~ (" Os demais contratos constam apenas do quadro." if d.fichas_fora else "")) }}
+  {% for k in c.quadro if k.grupo in d.fichas_ids %}
+  <div class="ficha-curta">
+    <div class="fc-cab">
+      <span class="dot {{ k.prioridade }}"></span>
+      <b>{{ curto(k.numero) }}</b>
+      <span class="fc-contratada">{{ k.contratada|truncate(60) }}</span>
+      <span class="fc-valor num">{{ k.valor_referencia|brl("Não comprovado") }}</span>
+    </div>
+    <div class="fc-sub">{{ k.objeto_resumido }} · {{ k.categoria }} · vigência até {{ k.vigencia_fim|data("—") }} ({{ dias(k.dias_para_fim) }}) · {{ rec(k.recomendacao) }} · {{ prio(k.prioridade) }}</div>
+    <p><b>Diagnóstico.</b> {{ k.diagnostico }}</p>
+    <p><b>Encaminhamento.</b> {{ k.encaminhamento }}</p>
+    <p><b>Perguntas ao órgão.</b> {% for q in k.perguntas %}{{ q }}{% if not loop.last %} | {% endif %}{% endfor %}</p>
+    <div class="fc-corp">
+      <span>{{ P.estatal_ti.sigla }}: {{ nivel(k.corporativo.estatal_ti.nivel) }}</span>
+      <span>Data Center: {{ nivel(k.corporativo.datacenter.nivel) }}</span>
+      <span>Compartilhamento: {{ nivel(k.corporativo.compartilhamento.nivel) }}</span>
+      {% if k.fontes_txt %}<span class="muted">Base: {% for f in k.fontes_txt %}{{ f.split(" · ")[0] }}{% if not loop.last %}, {% endif %}{% endfor %}</span>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+  {% if d.fichas_fora %}<p class="small muted">Sem ficha (prioridade baixa): {{ d.fichas_fora|join(", ") }}.</p>{% endif %}
+</section>
+
+{# ================================================================ PLANO #}
+<section class="fluxo">
+  {{ cab("Execução", "Plano de ação") }}
+  <table>
+    <thead><tr><th style="width:16mm">Prioridade</th><th style="width:20mm">Contrato</th><th>Ação</th><th style="width:34mm">Responsável</th><th style="width:22mm">Prazo</th></tr></thead>
+    <tbody>
+    {% for a in d.plano|sort(attribute="prioridade") %}
+      <tr><td>{{ prio(a.prioridade) }}</td><td class="forte">{{ curto(a.contrato) }}</td><td>{{ a.acao }}</td><td class="small">{{ a.responsavel }}</td><td class="small">{{ a.prazo }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="grid-2" style="margin-top:6mm">
+    <div>
+      <h3 style="margin-top:0">Perguntas ao dirigente</h3>
+      <ol class="perguntas">{% for q in d.perguntas_dirigente %}<li>{{ q }}</li>{% endfor %}</ol>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Documentos que faltam</h3>
+      <ul class="lista">{% for x in d.documentos_faltantes %}<li><strong>{{ x.documento }}</strong> — {{ x.finalidade }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+
+  {% if d.conclusao %}
+  <div class="sintese"><b class="t">CONCLUSÃO</b><p>{{ d.conclusao }}</p></div>
+  {% endif %}
+</section>
+
+{# ================================================================ FONTES #}
+<section class="fluxo">
+  {{ cab("Respaldo", "Fontes e método") }}
+  <table class="evidencias">
+    <thead><tr><th style="width:11mm">Ref.</th><th style="width:28mm">Local</th><th>Trecho do documento</th></tr></thead>
+    <tbody>
+    {% for e in d.evidencias %}
+      <tr><td class="forte">{{ e.id }}</td><td class="small">{{ e.local }}</td><td class="citacao">“{{ e.trecho|truncate(170) }}”</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small muted">Local: código do documento (lista abaixo), página e linha do texto da página. O trecho pode ser localizado no PDF original por busca.
+  Documentos: {% for x in d.inventario %}{{ x.codigo }} = {{ x.nome|truncate(70) }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>
+
+  <h4>Método</h4>
+  <ul class="lista small">
+    <li>Leitura integral de todos os contratos e aditivos recebidos, com extração do texto (inclusive digitalizações).</li>
+    <li>Cada afirmação com fonte foi localizada automaticamente no documento citado; valores e somas foram recalculados.{% if d.checagem %} Uma revisão independente conferiu {{ d.checagem.total }} afirmações deste diagnóstico ({{ d.checagem.confirmadas }} confirmadas{% if d.checagem.corrigidas %}, {{ d.checagem.corrigidas }} corrigidas{% endif %}).{% endif %}</li>
+    <li>A análise contratual completa (cláusulas, prazos, inconsistências formais) fica disponível como documento técnico de apoio. Este diagnóstico não substitui parecer jurídico.</li>
+  </ul>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+{
+  "grupo": "G01",
+  "documentos": ["D02", "D05"],
+  "observacoes_documentos": ["D05 é termo de referência, usado só como contexto."],
+
+  "numero": "010/2026/ORG{{ P.ente.sufixo_numero }}",
+  "contratada": "Razão Social Ltda.",
+  "cnpj": "00.000.000/0001-00",
+  "processo": "ORG-PRO-2025/00000",
+  "modalidade": "Pregão eletrônico | Dispensa | Inexigibilidade | Adesão a ata | ...",
+  "fundamento_legal": "Lei 14.133/2021, art. 75, II",
+  "categoria": "Conectividade e telecomunicações",
+  "objeto_resumido": "Link satelital para 3 unidades",
+  "objeto": "Texto completo do objeto, como no contrato.",
+
+  "valor_original": 144000.00,
+  "valor_atualizado": null,
+  "valor_mensal": 12000.00,
+  "valor_anual": 144000.00,
+  "base_valor_anual": "Valor mensal da cláusula 6.1 × 12.",
+  "vigencia_inicio": "2026-01-15",
+  "vigencia_fim": "2027-01-14",
+  "prazo": "12 meses",
+  "prorrogacao": "Sim, até 10 anos (art. 107 da Lei 14.133/2021)",
+
+  "itens": [
+    {
+      "descricao": "Serviço de conectividade satelital de baixa órbita",
+      "produto_normalizado": "Starlink Business",
+      "fabricante": "Starlink",
+      "metrica": "terminal/mês",
+      "quantidade": 3,
+      "valor_unitario": 4000.00,
+      "valor_total": 144000.00,
+      "periodicidade": "global",
+      "fonte": {"doc": "D02", "pagina": 3, "trecho": "trecho literal da tabela ou cláusula"}
+    }
+  ],
+  "quantitativos": ["3 terminais"],
+  "sla": "Disponibilidade de 99%; reparo em 48 h.",
+  "condicoes_alteracao": "Supressão até 25%; rescisão com aviso de 60 dias.",
+  "dados_pessoais": {"trata": false, "clausula_lgpd": true, "descricao": "Não trata dados pessoais além dos de contato."},
+
+  "fontes_campos": {
+    "valor_original": {"doc": "D02", "pagina": 4, "trecho": "trecho literal"},
+    "vigencia_inicio": {"doc": "D02", "pagina": 5, "trecho": "trecho literal"},
+    "vigencia_fim": {"doc": "D02", "pagina": 5, "trecho": "trecho literal"},
+    "contratada": {"doc": "D02", "pagina": 1, "trecho": "trecho literal"}
+  },
+
+  "necessidade": "Essencial | Necessário | Complementar | Justificativa insuficiente",
+  "recomendacao": "MANTER COM AJUSTES",
+  "prioridade": "P1 | P2 | P3",
+  "confianca": "Alto | Médio | Baixo",
+  "potencial_economia": "Alto | Médio | Baixo | Indeterminado",
+
+  "veredito": "Uma ou duas frases objetivas sobre o principal ponto de atenção do contrato.",
+  "o_que_fazer": ["Ação curta e específica 1.", "Ação 2."],
+  "missao": "Por que o serviço pode ser necessário para as competências do órgão e o que falta para confirmar o dimensionamento.",
+
+  "diagnostico": [
+    {"natureza": "Fato", "texto": "Afirmação documentada.", "fonte": {"doc": "D02", "pagina": 4, "trecho": "trecho literal"}},
+    {"natureza": "Inferência", "texto": "Conclusão técnica.", "fonte": {"doc": "D02", "pagina": 6, "trecho": "trecho literal (opcional para inferência)"}},
+    {"natureza": "Hipótese", "texto": "Depende de confirmação.", "fonte": null}
+  ],
+  "questionamentos": ["Pergunta específica 1?", "Pergunta 2?", "Pergunta 3?"],
+
+  "racionalizacao": {
+    "medida": "Medida proposta.",
+    "razoes": "Por que.",
+    "beneficios": "Economia ou benefício possível (sem inventar valores).",
+    "condicoes": "Condições para adotar.",
+    "riscos": "Riscos a controlar.",
+    "proximo_passo": "Próxima providência concreta."
+  },
+  "corporativo": {
+    "compartilhamento": {"nivel": "Alto | Médio | Baixo | Não determinado", "justificativa": "..."},
+    "estatal_ti": {"nivel": "...", "justificativa": "..."},
+    "datacenter": {"nivel": "...", "justificativa": "..."}
+  },
+
+  "inconsistencias": [
+    {
+      "tipo": "Aritmética de preços | Datas e prazos | Identificação | Cláusula estranha ao objeto | Cláusula ausente | Regime jurídico | Aditivos | Lacuna contratual | Formal",
+      "descricao": "O que está errado, em linguagem direta.",
+      "gravidade": "Alta | Média | Baixa",
+      "encaminhamento": "Como resolver.",
+      "fonte": {"doc": "D02", "pagina": 4, "trecho": "trecho literal"}
+    }
+  ],
+  "sinais_sombreamento": [
+    {"tema": "hospedagem", "descricao": "Escopo exato coberto.", "fonte": {"doc": "D02", "pagina": 2, "trecho": "trecho literal"}}
+  ],
+  "documentos_faltantes": [
+    {"documento": "Relatório de consumo dos últimos 6 meses", "finalidade": "Confirmar dimensionamento"}
+  ]
+}

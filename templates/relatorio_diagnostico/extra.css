@@ -1,0 +1,33 @@
+/* Diagnóstico {{ P.emissor.sigla }} — componentes compactos (alvo: até 10 páginas) */
+
+/* seções que continuam na mesma página quando há espaço */
+section.fluxo { margin-top: 9mm; }
+section.fluxo > .parte-cab { break-after: avoid; }
+.sintese { break-inside: avoid; }
+
+.alerta.compacto { padding: 2.6mm 3.6mm; grid-template-columns: 1fr 40mm; }
+.alerta.compacto .tit { font-size: 10pt; }
+.alerta.compacto .txt { font-size: 8.6pt; }
+
+.gov { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.gov .caixa p { font-size: 8.4pt; margin-bottom: 2mm; }
+.gov-lista { display: grid; gap: 1mm; font-size: 7.8pt; border-top: .6pt solid var(--line-2); padding-top: 1.6mm; }
+
+.sobrep { font-size: 8.6pt; padding: 2mm 0; border-bottom: .5pt solid var(--line); break-inside: avoid; }
+.sobrep b { color: var(--navy); }
+.sobrep .muted { display: block; font-size: 7.8pt; margin-top: .6mm; }
+
+.ficha-curta {
+  border: .6pt solid var(--line); border-left: 1.4mm solid var(--navy-3);
+  border-radius: 1.4mm; padding: 2.8mm 4mm; margin-bottom: 3mm; break-inside: avoid;
+  font-size: 8.6pt;
+}
+.ficha-curta p { margin: 1.2mm 0; }
+.ficha-curta p b { color: var(--navy); }
+.fc-cab { display: flex; align-items: baseline; gap: 2.4mm; font-size: 10pt; }
+.fc-cab b { color: var(--navy); }
+.fc-contratada { color: var(--ink-2); flex: 1; font-size: 8.6pt; }
+.fc-valor { font-weight: 700; color: var(--navy); }
+.fc-sub { font-size: 7.6pt; color: var(--ink-3); margin: .6mm 0 1.4mm; }
+.fc-sub .badge { font-size: 6.8pt; }
+.fc-corp { display: flex; flex-wrap: wrap; gap: 4mm; font-size: 7.6pt; color: var(--ink-2); border-top: .5pt solid var(--line-2); padding-top: 1.4mm; margin-top: 1.6mm; }

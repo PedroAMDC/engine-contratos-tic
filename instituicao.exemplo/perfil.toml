@@ -1,0 +1,64 @@
+# Perfil da instituição — EXEMPLO com nomes fictícios.
+#
+# Para usar a engine na sua instituição, copie esta pasta para `instituicao/` (fora do git),
+# troque os valores e as logos. Todos os relatórios, planilhas e prompts leem daqui.
+# `genero` ("f" ou "m") serve para as contrações: "da", "à", "pela" / "do", "ao", "pelo".
+
+[emissor]
+sigla = "UGD"
+nome = "Unidade de Governança Digital"
+genero = "f"
+nome_capa = ["Unidade de", "Governança Digital"]
+
+[orgao_central]
+# órgão central de gestão de TIC e de compras corporativas
+sigla = "SEGES"
+nome = "Secretaria de Estado de Gestão"
+genero = "f"
+area_aquisicoes = "SEGES/Aquisições"
+
+[ente]
+sigla = "EX"
+nome = "Estado Exemplo"
+estado = "Estado Exemplo"
+governo = "Governo do Estado Exemplo"
+governo_curto = "Governo de EX"
+poder = "Poder Executivo do Estado Exemplo"
+poder_medio = "Poder Executivo do Estado Exemplo"
+poder_curto = "Poder Executivo de EX"
+capital = "Capital Exemplo"
+dominio = "ex.gov.br"
+diario_oficial = "Diário Oficial do Estado"
+portal_transparencia = "Portal da Transparência do Estado"
+# sufixo dos números de contrato, removido para encurtar (ex.: 010/2026/ORG/EX)
+sufixo_numero = "/EX"
+
+[estatal_ti]
+# empresa pública de TIC do ente
+sigla = "ETI"
+nome = "Empresa Estadual de Tecnologia da Informação"
+genero = "f"
+cnpj = "00000000000100"
+# reconhece a empresa pela razão social quando o CNPJ falta ou está errado (regex, sem diferenciar maiúsculas)
+padrao_nome = 'empresa estadual de tecnologia da informa|\bETI\b'
+descricao = "empresa pública de TIC do Estado"
+# rede de dados governamental operada pela estatal (vazio se não houver)
+rede_governo = "Rede Estadual de Dados"
+
+[datacenter_central]
+nome = "Data Center Central"
+descricao = "Futura infraestrutura central do Governo para hospedar sistemas dos órgãos."
+
+[atas]
+# órgãos que costumam gerenciar atas de registro de preço corporativas
+gerenciadores = ["SEGES", "ETI"]
+
+[relatorio]
+classificacao = "USO INTERNO"
+# finalidade padrão impressa nos diagnósticos por órgão
+finalidade = "Apoio à gestão dos contratos de TIC"
+# quem pediu o mapa da infraestrutura de dados (vazio para omitir a menção)
+demandante_mapa = ""
+logo_faixa = "logo.svg"
+logo_faixa_alt = "Governo do Estado Exemplo"
+brasao = "brasao.svg"

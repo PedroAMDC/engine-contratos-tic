@@ -1,0 +1,589 @@
+{
+  "meta": {
+    "modelo": true,
+    "orgao_sigla": "OM",
+    "orgao_nome": "Órgão Modelo (dados ilustrativos para validação do template)",
+    "unidade_emissora": "Unidade de Governança Digital — UGD",
+    "data_referencia": "2026-10-19",
+    "data_emissao": "2026-10-19",
+    "versao": "0.1",
+    "classificacao": "USO INTERNO",
+    "finalidade": "Apoio à gestão dos contratos de TIC",
+    "objetivo": "Diagnosticar, com base exclusivamente nos documentos recebidos, se os recursos destinados à tecnologia estão sendo empregados de forma necessária, proporcional, eficiente e alinhada ao ecossistema tecnológico do Governo, apontando sobreposições entre contratos, inconsistências documentais e oportunidades de racionalização."
+  },
+
+  "orgao": {
+    "missao": "O Órgão Modelo é uma autarquia estadual responsável pela regulação e fiscalização de um setor de serviços públicos, com atendimento a cidadãos e empresas em todo o território do Estado, incluindo três unidades regionais em áreas sem cobertura terrestre de telecomunicações.",
+    "finalisticas": [
+      "Fiscalização e regulação setorial, com processos administrativos sancionadores.",
+      "Atendimento ao cidadão e ouvidoria regulatória.",
+      "Gestão de cadastros e indicadores de qualidade dos serviços regulados."
+    ],
+    "apoio": [
+      "Gestão administrativa, financeira e de pessoas.",
+      "Gestão documental e protocolo.",
+      "Comunicação institucional."
+    ],
+    "servicos_criticos": [
+      "Sistema finalístico de fiscalização (plataforma SaaS, contrato 031/2024/OM).",
+      "Hospedagem de bases cadastrais e portal de serviços (ETI, contrato 012/2025/OM).",
+      "Conectividade das unidades remotas (contrato 015/2025/OM)."
+    ],
+    "impacto_interrupcao": "A indisponibilidade do sistema finalístico suspende autos de fiscalização e prazos processuais; a das unidades remotas interrompe o atendimento presencial no interior.",
+    "necessidades_especificas": "Regras de negócio regulatórias próprias justificam solução finalística dedicada. Demais demandas (impressão, certificação, design, hospedagem) são comuns à Administração.",
+    "compartilhavel": "Hospedagem, certificação digital, licenças de escritório e design, impressão e desenvolvimento sob demanda têm alto potencial de padronização.",
+    "riscos_setor": "Prazos processuais e decisões regulatórias dependem de trilha de auditoria íntegra; dados de regulados incluem informações comerciais sensíveis.",
+    "fontes": [
+      "Lei de criação e regimento interno (ilustrativo).",
+      "Carta de Serviços do órgão (ilustrativo).",
+      "Documentos contratuais listados no Anexo A."
+    ],
+    "limitacoes": "Dados ilustrativos: este é um modelo para validação visual do relatório, sem correspondência com órgão real."
+  },
+
+  "resumo": {
+    "manchete": "Os contratos essenciais do órgão estão adequadamente caracterizados. Os pontos de atenção estão nas contratações acessórias: dois instrumentos remuneram o mesmo tipo de serviço de software, e a locação de impressoras vence em 70 dias sem medição de uso.",
+    "alertas": [
+      {
+        "nivel": "Crítico",
+        "titulo": "Dois contratos para o mesmo trabalho de software",
+        "texto": "O 031/2024/OM já inclui 1.200 horas por ano para evoluir o sistema de fiscalização. O 007/2026/OM comprou 4.000 UST de desenvolvimento sem dizer para quais sistemas. Sem uma regra que defina quem atende cada demanda, o órgão pode pagar duas vezes pela mesma entrega.",
+        "contratos": ["031/2024/OM", "007/2026/OM"],
+        "valor_em_jogo": "até R$ 1,08 mi/ano",
+        "prazo": "antes da próxima ordem de serviço",
+        "acao": "Aprovar matriz de responsabilidades entre os dois contratos."
+      },
+      {
+        "nivel": "Crítico",
+        "titulo": "Impressoras: contrato vence em 70 dias",
+        "texto": "São 42 equipamentos com franquia de 60.000 páginas/mês, dimensionados em 2023. A renovação está sendo decidida sem medir quanto se imprime hoje.",
+        "contratos": ["019/2023/OM"],
+        "valor_em_jogo": "R$ 104 mil/ano",
+        "prazo": "28/12/2026",
+        "acao": "Exigir relatório de páginas impressas e reduzir o parque na prorrogação."
+      },
+      {
+        "nivel": "Atenção",
+        "titulo": "Hospedagem paga em dois lugares",
+        "texto": "O sistema de fiscalização cobra hospedagem própria (R$ 18.900,00/mês), enquanto o órgão já tem nuvem privada contratada com a ETI. Pode haver espaço para unificar, mas depende de estudo técnico.",
+        "contratos": ["031/2024/OM", "012/2025/OM"],
+        "valor_em_jogo": "até R$ 226,8 mil/ano",
+        "prazo": "estudo em 90 dias",
+        "acao": "Pedir à ETI estudo de capacidade e preço."
+      },
+      {
+        "nivel": "Atenção",
+        "titulo": "Aditivo cita número de contrato errado",
+        "texto": "O aditivo que prorrogou a conectividade satelital identifica o contrato como 015/2024, e não 015/2025. É um erro formal, mas fragiliza o instrumento de um serviço essencial.",
+        "contratos": ["015/2025/OM"],
+        "valor_em_jogo": "risco formal",
+        "prazo": "30 dias",
+        "acao": "Corrigir por apostilamento."
+      },
+      {
+        "nivel": "Informativo",
+        "titulo": "Redução na ETI já foi feita: não contar de novo",
+        "texto": "O 1º aditivo do 012/2025/OM já cortou R$ 420.000,00 (10%). Esse valor não é economia futura.",
+        "contratos": ["012/2025/OM"],
+        "valor_em_jogo": "evita dupla contagem",
+        "prazo": "—",
+        "acao": "Partir do valor atualizado de R$ 3.780.000,00."
+      }
+    ],
+    "riscos": [
+      "Execução sobreposta de demandas de software sem rastreabilidade por instrumento.",
+      "Dependência da plataforma SaaS sem cláusula clara de portabilidade dos dados.",
+      "Interrupção do atendimento nas unidades remotas se o link satelital não for renovado a tempo."
+    ],
+    "oportunidades": [
+      "Matriz única de demandas de software entre 031/2024 e 007/2026.",
+      "Estudo de hospedagem única com a ETI e o futuro data center corporativo.",
+      "Redimensionar impressão e licenças de design na próxima renovação.",
+      "Aderir a contratações corporativas de certificação digital."
+    ],
+    "decisoes": [
+      {"decisao": "Determinar matriz de responsabilidades e catálogo de entregas entre a sustentação do sistema finalístico e a fábrica de software antes de nova ordem de serviço.", "contratos": ["031/2024/OM", "007/2026/OM"], "prioridade": "P1"},
+      {"decisao": "Condicionar a prorrogação da locação de impressoras à medição de volume dos últimos 12 meses.", "contratos": ["019/2023/OM"], "prioridade": "P1"},
+      {"decisao": "Solicitar à ETI estudo de capacidade e preço para hospedar a base do sistema finalístico.", "contratos": ["012/2025/OM", "031/2024/OM"], "prioridade": "P1"},
+      {"decisao": "Sanear as inconsistências documentais por apostilamento ou aditivo, conforme o caso.", "contratos": ["004/2025/OM", "022/2026/OM", "015/2025/OM"], "prioridade": "P2"}
+    ]
+  },
+
+  "contratos": [
+    {
+      "numero": "031/2024/OM",
+      "contratada": "Alfa Sistemas de Gestão Ltda.",
+      "cnpj": "00.000.000/0001-00",
+      "categoria": "Sistemas finalísticos",
+      "objeto_resumido": "Plataforma SaaS de fiscalização e sustentação",
+      "objeto": "Licenciamento em nuvem (SaaS) de plataforma de gestão de fiscalização regulatória, com implantação, migração de dados, hospedagem, sustentação corretiva e banco de 1.200 horas anuais de evolução.",
+      "valor_original": 6480000.00,
+      "valor_atualizado": 6804000.00,
+      "valor_mensal": 113400.00,
+      "valor_anual": 1360800.00,
+      "vigencia_inicio": "2024-08-01",
+      "vigencia_fim": "2029-07-31",
+      "prazo": "60 meses",
+      "prorrogacao": "Não prevista além de 60 meses",
+      "quantitativos": ["Até 350 usuários nomeados", "1.200 horas/ano de evolução", "Hospedagem: R$ 18.900,00/mês"],
+      "sla": "Disponibilidade de 99,5% mensal; incidentes críticos em até 4 h.",
+      "condicoes_alteracao": "Supressão de até 25% (art. 125 da Lei 14.133/2021); cláusula de transição com entrega dos dados em formato aberto, sem prazo definido.",
+      "documentos": [
+        {"arquivo": "Contrato 031-2024 Alfa (assinado).pdf", "tipo": "Contrato", "paginas": 38},
+        {"arquivo": "1º Termo Aditivo 031-2024 reajuste.pdf", "tipo": "Aditivo", "paginas": 4}
+      ],
+      "necessidade": "Essencial",
+      "recomendacao": "MANTER COM AJUSTES",
+      "prioridade": "P2",
+      "confianca": "Alto",
+      "potencial_economia": "Médio",
+      "veredito": "Sistema essencial e bem contratado. O que precisa de ajuste são dois itens acessórios: o banco de horas de evolução, que se sobrepõe à fábrica de software, e a hospedagem própria.",
+      "o_que_fazer": ["Separar o que é evolução deste contrato e o que vai para a fábrica de software.", "Medir uso real das 1.200 horas e dos 350 usuários.", "Fixar prazo para devolução dos dados no fim do contrato."],
+      "missao": "A plataforma sustenta a atividade-fim de fiscalização e os prazos processuais. A necessidade está demonstrada; faltam evidências de uso das 1.200 horas de evolução e do número real de usuários ativos frente aos 350 nomeados.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "O 1º aditivo aplicou reajuste de 5% pelo IPCA, elevando o global de R$ 6.480.000,00 para R$ 6.804.000,00.", "fonte": "1º Termo Aditivo, p. 2, cl. 2.1"},
+        {"natureza": "Fato", "texto": "A hospedagem é item próprio, cobrado a R$ 18.900,00 mensais.", "fonte": "Contrato, p. 31, Anexo II, item 4"},
+        {"natureza": "Inferência", "texto": "O banco de horas de evolução cobre o mesmo tipo de demanda que a fábrica de software 007/2026/OM, o que exige delimitação de escopo.", "fonte": "Contrato, p. 12, cl. 5.3"},
+        {"natureza": "Hipótese", "texto": "A hospedagem na infraestrutura da ETI poderia reduzir o custo do item 4, desde que mantidos os SLAs e a responsabilidade do fornecedor pela aplicação.", "fonte": null}
+      ],
+      "questionamentos": [
+        "Quantos dos 350 usuários nomeados acessaram a plataforma nos últimos 90 dias?",
+        "Quantas das 1.200 horas de evolução foram consumidas em 2025 e em quais funcionalidades?",
+        "Qual o prazo e o formato de entrega dos dados em caso de encerramento contratual?",
+        "O fornecedor admite hospedagem em infraestrutura do Estado? Com que impacto no preço e no SLA?"
+      ],
+      "racionalizacao": {
+        "medida": "Delimitar evolução × fábrica de software e estudar hospedagem.",
+        "razoes": "Sistema essencial, mas com itens acessórios (hospedagem e evolução) passíveis de otimização.",
+        "beneficios": "Evitar pagamento duplicado de evolução; eventual redução do item de hospedagem.",
+        "condicoes": "Aceite técnico do fornecedor; estudo de capacidade da ETI; preservação dos SLAs.",
+        "riscos": "Perda de responsabilidade única pela aplicação; risco de transição de ambiente.",
+        "proximo_passo": "Solicitar relatório de consumo do banco de horas e cláusula de portabilidade em 30 dias."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Baixo", "justificativa": "Regras de negócio específicas da regulação setorial."},
+        "estatal_ti": {"nivel": "Médio", "justificativa": "Possível papel de hospedagem e integração, não de substituição do SaaS."},
+        "datacenter": {"nivel": "Médio", "justificativa": "Candidato a estudo de hospedagem da base de dados, sem presumir capacidade."}
+      }
+    },
+    {
+      "numero": "012/2025/OM",
+      "contratada": "ETI — Empresa Estadual de Tecnologia da Informação",
+      "cnpj": null,
+      "categoria": "Infraestrutura e hospedagem",
+      "objeto_resumido": "Nuvem privada, hospedagem e banco de dados",
+      "objeto": "Prestação de serviços de nuvem privada, hospedagem de aplicações, banco de dados gerenciado, backup e conectividade corporativa.",
+      "valor_original": 4200000.00,
+      "valor_atualizado": 3780000.00,
+      "valor_mensal": 157500.00,
+      "valor_anual": 1890000.00,
+      "vigencia_inicio": "2025-03-12",
+      "vigencia_fim": "2027-03-11",
+      "prazo": "24 meses",
+      "prorrogacao": "Sim, até 10 anos (art. 107 da Lei 14.133/2021)",
+      "quantitativos": ["120 vCPU", "480 GB de RAM", "40 TB de armazenamento", "Backup diário com retenção de 30 dias"],
+      "sla": "Disponibilidade de 99,7%; RPO de 24 h; RTO de 8 h.",
+      "condicoes_alteracao": "Consumo por catálogo de serviços ETI; redução de capacidade por ordem de serviço.",
+      "documentos": [
+        {"arquivo": "Contrato 012-2025 ETI.pdf", "tipo": "Contrato", "paginas": 22},
+        {"arquivo": "1º Aditivo 012-2025 supressão.pdf", "tipo": "Aditivo", "paginas": 3}
+      ],
+      "necessidade": "Necessário",
+      "recomendacao": "MANTER COM AJUSTES",
+      "prioridade": "P1",
+      "confianca": "Médio",
+      "potencial_economia": "Médio",
+      "veredito": "Contratação já corporativa e adequada. Falta comprovar que a capacidade contratada corresponde ao que o órgão usa.",
+      "o_que_fazer": ["Pedir à ETI relatório de consumo dos últimos 6 meses.", "Ajustar a capacidade ao consumo medido.", "Avaliar trazer para cá a hospedagem do sistema de fiscalização."],
+      "missao": "Sustenta portal de serviços, bases cadastrais e sistemas administrativos. É contratação já corporativa; o ponto de atenção é o dimensionamento.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "O 1º aditivo suprimiu 10% do valor (R$ 420.000,00), resultando em R$ 3.780.000,00.", "fonte": "1º Aditivo, p. 1, cl. 1.1"},
+        {"natureza": "Inferência", "texto": "Sem relatório de consumo, não é possível afirmar se as 120 vCPU contratadas são compatíveis com a carga atual.", "fonte": "Contrato, p. 18, Anexo I"},
+        {"natureza": "Hipótese", "texto": "A base do sistema finalístico poderia ser hospedada neste contrato, reduzindo o item de hospedagem do 031/2024/OM.", "fonte": null}
+      ],
+      "questionamentos": [
+        "Qual o consumo médio e de pico de vCPU, memória e armazenamento nos últimos seis meses?",
+        "Quais aplicações estão hospedadas e quais poderiam ser desativadas?",
+        "A supressão do 1º aditivo retirou quais itens do catálogo?",
+        "Há plano de migração para o data center corporativo e com qual cronograma?"
+      ],
+      "racionalizacao": {
+        "medida": "Ajustar capacidade ao consumo medido e avaliar absorção de hospedagem do SaaS.",
+        "razoes": "Infraestrutura corporativa adequada, mas dimensionamento não comprovado.",
+        "beneficios": "Redução de capacidade ociosa, se demonstrada; possível consolidação de hospedagem.",
+        "condicoes": "Relatório de consumo da ETI; estudo de compatibilidade técnica.",
+        "riscos": "Subdimensionamento e perda de desempenho em picos.",
+        "proximo_passo": "Requisitar à ETI relatório de consumo e inventário de aplicações hospedadas."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Alto", "justificativa": "Serviço já corporativo e padronizado."},
+        "estatal_ti": {"nivel": "Alto", "justificativa": "A ETI é a própria contratada."},
+        "datacenter": {"nivel": "Alto", "justificativa": "Carga candidata natural à migração, sujeita a estudo de capacidade."}
+      }
+    },
+    {
+      "numero": "007/2026/OM",
+      "contratada": "Beta Tecnologia e Serviços S.A.",
+      "cnpj": "00.000.000/0002-00",
+      "categoria": "Desenvolvimento de software",
+      "objeto_resumido": "Fábrica de software por UST",
+      "objeto": "Serviços de desenvolvimento, manutenção evolutiva e sustentação de sistemas, mensurados em Unidades de Serviço Técnico (UST).",
+      "valor_original": 2150000.00,
+      "valor_atualizado": null,
+      "valor_mensal": null,
+      "valor_anual": 1075000.00,
+      "vigencia_inicio": "2026-02-10",
+      "vigencia_fim": "2028-02-09",
+      "prazo": "24 meses",
+      "prorrogacao": "Sim, até 10 anos",
+      "quantitativos": ["4.000 UST em 24 meses", "Valor unitário: R$ 537,50/UST"],
+      "sla": "Prazos por ordem de serviço; sem catálogo de entregas anexado.",
+      "condicoes_alteracao": "Execução sob demanda; não há obrigação de consumo mínimo.",
+      "documentos": [
+        {"arquivo": "Contrato 007-2026 Beta.pdf", "tipo": "Contrato", "paginas": 27}
+      ],
+      "necessidade": "Complementar",
+      "recomendacao": "CONSOLIDAR",
+      "prioridade": "P1",
+      "confianca": "Médio",
+      "potencial_economia": "Alto",
+      "veredito": "Ponto mais sensível do órgão: 4.000 UST compradas sem lista de sistemas nem catálogo de entregas, com escopo que repete a evolução já paga no 031/2024/OM.",
+      "o_que_fazer": ["Suspender novas ordens de serviço para o sistema de fiscalização até haver regra de divisão.", "Exigir catálogo de entregas e lista de sistemas atendidos.", "Consultar a ETI sobre capacidade da fábrica corporativa."],
+      "missao": "Pode atender a sistemas administrativos e integrações. A necessidade adicional à evolução já contratada no 031/2024/OM não está demonstrada.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "4.000 UST a R$ 537,50, totalizando R$ 2.150.000,00; não há catálogo de serviços nem lista de sistemas-alvo.", "fonte": "Contrato, p. 9, cl. 3.2 e Anexo I"},
+        {"natureza": "Inferência", "texto": "Escopo de manutenção evolutiva coincide com o banco de horas do 031/2024/OM.", "fonte": "Contrato, p. 4, cl. 1.2"},
+        {"natureza": "Hipótese", "texto": "A fábrica de software corporativa da ETI poderia atender parte das demandas.", "fonte": null}
+      ],
+      "questionamentos": [
+        "Quais sistemas e entregas estão na carteira de ordens de serviço?",
+        "Alguma OS já emitida trata de evolução do sistema finalístico coberto pelo 031/2024/OM?",
+        "Como foi estimado o quantitativo de 4.000 UST?",
+        "Foi consultada a ETI sobre capacidade e preço de fábrica de software?"
+      ],
+      "racionalizacao": {
+        "medida": "Consolidar demandas de software com catálogo único e regra de roteamento por instrumento.",
+        "razoes": "Sobreposição de escopo com o 031/2024/OM e ausência de catálogo.",
+        "beneficios": "Evitar pagamento duplicado; consumo de UST apenas para demandas sem cobertura.",
+        "condicoes": "Matriz de responsabilidades aprovada pela gestão; inventário de demandas.",
+        "riscos": "Atraso de demandas legítimas durante a reorganização.",
+        "proximo_passo": "Suspender novas OS de evolução do sistema finalístico até aprovação da matriz."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Alto", "justificativa": "Fábrica de software é serviço horizontal, passível de ata corporativa."},
+        "estatal_ti": {"nivel": "Médio", "justificativa": "Depende de capacidade disponível da fábrica da ETI."},
+        "datacenter": {"nivel": "Não determinado", "justificativa": "Serviço não depende de infraestrutura física."}
+      }
+    },
+    {
+      "numero": "019/2023/OM",
+      "contratada": "Gama Outsourcing de Impressão Ltda.",
+      "cnpj": "00.000.000/0003-00",
+      "categoria": "Impressão e periféricos",
+      "objeto_resumido": "Locação de 42 impressoras com franquia",
+      "objeto": "Locação de impressoras multifuncionais com suprimentos, manutenção e franquia de páginas.",
+      "valor_original": 288000.00,
+      "valor_atualizado": 312000.00,
+      "valor_mensal": 8666.67,
+      "valor_anual": 104000.00,
+      "vigencia_inicio": "2023-12-29",
+      "vigencia_fim": "2026-12-28",
+      "prazo": "36 meses",
+      "prorrogacao": "Sim, até 10 anos",
+      "quantitativos": ["42 multifuncionais", "Franquia de 60.000 páginas/mês"],
+      "sla": "Atendimento em até 8 h úteis.",
+      "condicoes_alteracao": "Redução de equipamentos admitida na prorrogação.",
+      "documentos": [
+        {"arquivo": "Contrato 019-2023 Gama.pdf", "tipo": "Contrato", "paginas": 18},
+        {"arquivo": "2º Aditivo 019-2023 prorrogação.pdf", "tipo": "Aditivo", "paginas": 3}
+      ],
+      "necessidade": "Necessário",
+      "recomendacao": "REDIMENSIONAR",
+      "prioridade": "P1",
+      "confianca": "Médio",
+      "potencial_economia": "Médio",
+      "veredito": "Serviço de apoio que vence em 70 dias com dimensionamento de 2023. Bom momento para reduzir, desde que com base em medição.",
+      "o_que_fazer": ["Exigir bilhetagem dos últimos 12 meses.", "Retirar equipamentos com uso baixo.", "Verificar adesão a contrato corporativo de impressão."],
+      "missao": "Impressão é apoio administrativo. Com a digitalização processual, o volume tende a cair.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "O 2º aditivo prorrogou até 28/12/2026 e reajustou o global para R$ 312.000,00.", "fonte": "2º Aditivo, p. 1"},
+        {"natureza": "Inferência", "texto": "Franquia de 60.000 páginas/mês equivale a cerca de 1.430 páginas por equipamento, número a confrontar com a medição real.", "fonte": "Contrato, p. 6, cl. 2.4"}
+      ],
+      "questionamentos": [
+        "Qual o volume médio mensal efetivamente impresso nos últimos 12 meses, por unidade?",
+        "Quantos equipamentos têm uso abaixo de 20% da franquia?",
+        "Quais processos ainda exigem impressão após a digitalização?"
+      ],
+      "racionalizacao": {
+        "medida": "Reduzir equipamentos e franquia na prorrogação, com base em medição.",
+        "razoes": "Contrato vence em 70 dias e o dimensionamento é de 2023.",
+        "beneficios": "Redução proporcional ao parque ocioso, a confirmar por medição.",
+        "condicoes": "Relatório de bilhetagem do fornecedor.",
+        "riscos": "Unidades remotas sem alternativa de impressão.",
+        "proximo_passo": "Exigir relatório de bilhetagem antes da decisão de prorrogação."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Alto", "justificativa": "Outsourcing de impressão é típico de ata corporativa."},
+        "estatal_ti": {"nivel": "Baixo", "justificativa": "Fora do catálogo típico da ETI."},
+        "datacenter": {"nivel": "Não determinado", "justificativa": "Sem relação com infraestrutura central."}
+      }
+    },
+    {
+      "numero": "015/2025/OM",
+      "contratada": "Zeta Telecomunicações Ltda.",
+      "cnpj": "00.000.000/0004-00",
+      "categoria": "Conectividade",
+      "objeto_resumido": "Link satelital para 3 unidades remotas",
+      "objeto": "Serviço de conectividade satelital de baixa órbita para três unidades regionais sem cobertura terrestre.",
+      "valor_original": 144000.00,
+      "valor_atualizado": 288000.00,
+      "valor_mensal": 12000.00,
+      "valor_anual": 144000.00,
+      "vigencia_inicio": "2025-09-01",
+      "vigencia_fim": "2027-08-31",
+      "prazo": "12 meses + 12 meses (1º aditivo)",
+      "prorrogacao": "Sim, até 10 anos",
+      "quantitativos": ["3 terminais", "Franquia ilimitada"],
+      "sla": "Disponibilidade de 99%; reparo em até 48 h.",
+      "condicoes_alteracao": "Rescisão sem ônus com aviso de 60 dias.",
+      "documentos": [
+        {"arquivo": "Contrato 015-2025 Zeta.pdf", "tipo": "Contrato", "paginas": 14},
+        {"arquivo": "1º Aditivo 015-2025 prorrogação.pdf", "tipo": "Aditivo", "paginas": 2}
+      ],
+      "necessidade": "Essencial",
+      "recomendacao": "MANTER",
+      "prioridade": "P3",
+      "confianca": "Alto",
+      "potencial_economia": "Baixo",
+      "veredito": "Essencial e com preço compatível. Único ajuste é formal: corrigir o número do contrato no aditivo.",
+      "o_que_fazer": ["Apostilar a correção do número no 1º aditivo.", "Acompanhar chegada de cobertura terrestre às unidades."],
+      "missao": "Única alternativa de conectividade das unidades remotas, que prestam atendimento presencial.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "O 1º aditivo prorrogou por 12 meses, mas identifica o instrumento como \"015/2024/OM\".", "fonte": "1º Aditivo, p. 1, preâmbulo"},
+        {"natureza": "Inferência", "texto": "O custo de R$ 4.000,00 por terminal/mês é compatível com o tipo de serviço, sem indício de sobrepreço nos documentos.", "fonte": "Contrato, p. 5"}
+      ],
+      "questionamentos": [
+        "Há previsão de chegada de cobertura terrestre a alguma das três unidades?",
+        "O número do contrato no aditivo será corrigido por apostilamento?",
+        "A rede corporativa estadual poderia atender alguma unidade?"
+      ],
+      "racionalizacao": {
+        "medida": "Manter; sanear o número do contrato no aditivo.",
+        "razoes": "Serviço essencial sem alternativa técnica documentada.",
+        "beneficios": "Segurança jurídica do instrumento.",
+        "condicoes": "Correção formal pela unidade de contratos.",
+        "riscos": "Baixos.",
+        "proximo_passo": "Encaminhar à unidade de contratos para apostilamento."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Médio", "justificativa": "Outros órgãos com unidades remotas podem demandar o mesmo serviço."},
+        "estatal_ti": {"nivel": "Médio", "justificativa": "A ETI pode coordenar contratação corporativa de conectividade."},
+        "datacenter": {"nivel": "Baixo", "justificativa": "Sem relação direta."}
+      }
+    },
+    {
+      "numero": "022/2026/OM",
+      "contratada": "Épsilon Licenciamento de Software Ltda.",
+      "cnpj": "00.000.000/0005-00",
+      "categoria": "Licenciamento",
+      "objeto_resumido": "25 licenças de software de design",
+      "objeto": "Licenças anuais de software de design gráfico e edição de vídeo.",
+      "valor_original": 96000.00,
+      "valor_atualizado": null,
+      "valor_mensal": null,
+      "valor_anual": 96000.00,
+      "vigencia_inicio": "2026-04-15",
+      "vigencia_fim": "2027-04-14",
+      "prazo": "12 meses",
+      "prorrogacao": "Sim",
+      "quantitativos": ["25 licenças nominais"],
+      "sla": "Suporte do fabricante.",
+      "condicoes_alteracao": "Sem previsão de redução no curso da vigência.",
+      "documentos": [
+        {"arquivo": "Contrato 022-2026 Épsilon.pdf", "tipo": "Contrato", "paginas": 11}
+      ],
+      "necessidade": "Complementar",
+      "recomendacao": "REDIMENSIONAR",
+      "prioridade": "P2",
+      "confianca": "Médio",
+      "potencial_economia": "Médio",
+      "veredito": "25 licenças parecem muitas para a estrutura de comunicação do órgão, e o contrato tem uma cláusula copiada de outro modelo.",
+      "o_que_fazer": ["Levantar quem usa cada licença.", "Reduzir na renovação de 04/2027.", "Corrigir a cláusula 9.2."],
+      "missao": "Atende à comunicação institucional. A quantidade de 25 licenças parece elevada para a estrutura de comunicação descrita.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "Cláusula 9.2 trata de garantia de \"equipamentos fornecidos\", estranha ao objeto de licenciamento.", "fonte": "Contrato, p. 7, cl. 9.2"},
+        {"natureza": "Hipótese", "texto": "Parte dos usuários pode ser atendida por licenças de menor custo.", "fonte": null}
+      ],
+      "questionamentos": [
+        "Quais unidades e servidores utilizam as 25 licenças?",
+        "Quantas licenças tiveram uso nos últimos 60 dias?",
+        "A cláusula 9.2 decorre de modelo reaproveitado?"
+      ],
+      "racionalizacao": {
+        "medida": "Reduzir licenças na renovação conforme uso medido.",
+        "razoes": "Quantitativo sem justificativa documentada.",
+        "beneficios": "Redução proporcional ao número de licenças sem uso.",
+        "condicoes": "Relatório do console de administração.",
+        "riscos": "Baixos.",
+        "proximo_passo": "Obter relatório de uso do console de licenças."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Alto", "justificativa": "Licenciamento corporativo tende a ganho de escala."},
+        "estatal_ti": {"nivel": "Baixo", "justificativa": "Revenda de licenças não é competência típica."},
+        "datacenter": {"nivel": "Não determinado", "justificativa": "Software em nuvem do fabricante."}
+      }
+    },
+    {
+      "numero": "004/2025/OM",
+      "contratada": "Delta Certificação Digital Ltda.",
+      "cnpj": "00.000.000/0006-00",
+      "categoria": "Certificação digital",
+      "objeto_resumido": "Certificados ICP-Brasil e-CPF e e-CNPJ",
+      "objeto": "Fornecimento de 120 certificados e-CPF A3 e 4 e-CNPJ A3, com tokens e validação.",
+      "valor_original": 38400.00,
+      "valor_atualizado": null,
+      "valor_mensal": null,
+      "valor_anual": 19200.00,
+      "vigencia_inicio": "2025-05-02",
+      "vigencia_fim": "2027-05-01",
+      "prazo": "24 meses",
+      "prorrogacao": "Não",
+      "quantitativos": ["120 e-CPF A3 a R$ 310,00", "4 e-CNPJ A3 a R$ 290,00"],
+      "sla": "Emissão em até 5 dias úteis.",
+      "condicoes_alteracao": "Fornecimento sob demanda.",
+      "documentos": [
+        {"arquivo": "Contrato 004-2025 Delta.pdf", "tipo": "Contrato", "paginas": 9}
+      ],
+      "necessidade": "Necessário",
+      "recomendacao": "MANTER COM AJUSTES",
+      "prioridade": "P2",
+      "confianca": "Alto",
+      "potencial_economia": "Baixo",
+      "veredito": "Valor baixo e necessidade clara, mas a conta dos itens não fecha com o total.",
+      "o_que_fazer": ["Corrigir o valor global por apostilamento.", "Emitir certificados só sob demanda comprovada."],
+      "missao": "Certificados são necessários para assinatura e acesso a sistemas, mas a quantidade deve ser confrontada com a assinatura eletrônica corporativa.",
+      "diagnostico": [
+        {"natureza": "Fato", "texto": "120 × R$ 310,00 + 4 × R$ 290,00 = R$ 38.360,00, mas o global informado é R$ 38.400,00.", "fonte": "Contrato, p. 3, cl. 2.1"}
+      ],
+      "questionamentos": [
+        "Quantos certificados foram efetivamente emitidos até agora?",
+        "Quais usuários precisam de e-CPF além da assinatura eletrônica corporativa?",
+        "Como será corrigida a diferença de R$ 40,00 no valor global?"
+      ],
+      "racionalizacao": {
+        "medida": "Emitir sob demanda comprovada e corrigir a planilha.",
+        "razoes": "Divergência aritmética e quantitativo sem inventário.",
+        "beneficios": "Segurança formal; emissão apenas do necessário.",
+        "condicoes": "Inventário de certificados ativos.",
+        "riscos": "Baixos.",
+        "proximo_passo": "Apostilar correção do valor global."
+      },
+      "corporativo": {
+        "compartilhamento": {"nivel": "Alto", "justificativa": "Item típico de registro de preços corporativo."},
+        "estatal_ti": {"nivel": "Baixo", "justificativa": "Fora do catálogo típico."},
+        "datacenter": {"nivel": "Não determinado", "justificativa": "Sem relação."}
+      }
+    }
+  ],
+
+  "sombreamentos": [
+    {
+      "contratos": ["031/2024/OM", "007/2026/OM"],
+      "area": "Evolução de sistemas",
+      "intensidade": "Forte",
+      "descricao": "Ambos preveem manutenção evolutiva: banco de 1.200 h/ano no SaaS e 4.000 UST na fábrica, sem regra que defina qual instrumento atende cada demanda.",
+      "evidencia": "031/2024, p. 12, cl. 5.3; 007/2026, p. 4, cl. 1.2",
+      "natureza": "Inferência",
+      "encaminhamento": "Matriz de responsabilidades e catálogo único de demandas."
+    },
+    {
+      "contratos": ["031/2024/OM", "012/2025/OM"],
+      "area": "Hospedagem",
+      "intensidade": "Média",
+      "descricao": "O SaaS cobra hospedagem própria (R$ 18.900,00/mês) enquanto o órgão mantém nuvem privada na ETI.",
+      "evidencia": "031/2024, Anexo II, item 4; 012/2025, Anexo I",
+      "natureza": "Hipótese",
+      "encaminhamento": "Estudo de viabilidade técnica e econômica com o fornecedor e a ETI."
+    },
+    {
+      "contratos": ["007/2026/OM", "012/2025/OM"],
+      "area": "Ambientes de desenvolvimento",
+      "intensidade": "Fraca",
+      "descricao": "A fábrica pode exigir ambientes de homologação que já existem na nuvem ETI.",
+      "evidencia": "007/2026, p. 15, cl. 7.1",
+      "natureza": "Hipótese",
+      "encaminhamento": "Definir que os ambientes sejam providos pelo contrato ETI."
+    }
+  ],
+
+  "inconsistencias": [
+    {"contrato": "004/2025/OM", "tipo": "Aritmética de preços", "descricao": "Soma dos itens (R$ 38.360,00) não confere com o valor global (R$ 38.400,00).", "evidencia": "Contrato 004-2025 Delta.pdf, p. 3, cl. 2.1", "gravidade": "Média", "encaminhamento": "Apostilamento de correção."},
+    {"contrato": "022/2026/OM", "tipo": "Cláusula estranha ao objeto", "descricao": "Garantia de \"equipamentos fornecidos\" em contrato exclusivamente de licenças.", "evidencia": "Contrato 022-2026 Épsilon.pdf, p. 7, cl. 9.2", "gravidade": "Baixa", "encaminhamento": "Verificação pela unidade de contratos."},
+    {"contrato": "015/2025/OM", "tipo": "Divergência entre documentos", "descricao": "Aditivo cita o contrato como \"015/2024/OM\", número diferente do instrumento original.", "evidencia": "1º Aditivo 015-2025 prorrogação.pdf, p. 1", "gravidade": "Alta", "encaminhamento": "Apostilamento para corrigir a identificação."},
+    {"contrato": "031/2024/OM", "tipo": "Lacuna contratual", "descricao": "Cláusula de transição prevê entrega dos dados em formato aberto, mas sem prazo definido.", "evidencia": "Contrato 031-2024 Alfa (assinado).pdf, p. 29, cl. 18.4", "gravidade": "Média", "encaminhamento": "Avaliar inclusão de prazo por aditivo."}
+  ],
+
+  "consolidacao": [
+    {"contratos": ["012/2025/OM", "031/2024/OM"], "categoria": "Hospedagem", "servico": "Hospedagem de aplicações e bases", "oportunidade": "Hospedagem única do órgão na ETI e, futuramente, no data center corporativo.", "papel_estatal_ti": "Provedora de infraestrutura e integradora.", "relacao_dc": "Candidato prioritário a estudo de migração.", "beneficio": "Eliminar custo paralelo de hospedagem, se viável.", "condicao": "Aceite do fornecedor SaaS e SLA equivalente."},
+    {"contratos": ["007/2026/OM"], "categoria": "Desenvolvimento", "servico": "Fábrica de software", "oportunidade": "Ata corporativa ou fábrica ETI para demandas horizontais.", "papel_estatal_ti": "Executora ou gestora do catálogo.", "relacao_dc": "Não se aplica.", "beneficio": "Ganho de escala e padronização.", "condicao": "Capacidade disponível da ETI."},
+    {"contratos": ["019/2023/OM"], "categoria": "Impressão", "servico": "Outsourcing de impressão", "oportunidade": "Adesão a contrato corporativo na renovação.", "papel_estatal_ti": "Nenhum.", "relacao_dc": "Não se aplica.", "beneficio": "Preço de escala.", "condicao": "Existência de ata vigente."},
+    {"contratos": ["004/2025/OM", "022/2026/OM"], "categoria": "Licenciamento", "servico": "Certificados e licenças de design", "oportunidade": "Registro de preços corporativo.", "papel_estatal_ti": "Nenhum.", "relacao_dc": "Não se aplica.", "beneficio": "Padronização e preço.", "condicao": "Levantamento de demanda entre órgãos."}
+  ],
+
+  "plano_acao": [
+    {"horizonte": "curto", "prioridade": "P1", "contrato": "019/2023/OM", "acao": "Medir volume de impressão e decidir prorrogação com redimensionamento.", "responsavel": "Fiscal do contrato / Coordenadoria Administrativa", "evidencia": "Bilhetagem dos últimos 12 meses", "prazo": "até 30/11/2026"},
+    {"horizonte": "curto", "prioridade": "P1", "contrato": "007/2026/OM", "acao": "Aprovar matriz de responsabilidades entre fábrica e sustentação do SaaS.", "responsavel": "Coordenadoria de TI", "evidencia": "Inventário de OS emitidas e banco de horas", "prazo": "30 dias"},
+    {"horizonte": "curto", "prioridade": "P2", "contrato": "015/2025/OM", "acao": "Apostilar correção do número do contrato no aditivo.", "responsavel": "Unidade de contratos", "evidencia": "—", "prazo": "30 dias"},
+    {"horizonte": "curto", "prioridade": "P2", "contrato": "004/2025/OM", "acao": "Apostilar correção do valor global.", "responsavel": "Unidade de contratos", "evidencia": "Planilha de preços", "prazo": "30 dias"},
+    {"horizonte": "medio", "prioridade": "P1", "contrato": "012/2025/OM", "acao": "Ajustar capacidade da nuvem ao consumo medido.", "responsavel": "Coordenadoria de TI / ETI", "evidencia": "Relatório de consumo de 6 meses", "prazo": "até 03/2027"},
+    {"horizonte": "medio", "prioridade": "P2", "contrato": "022/2026/OM", "acao": "Redimensionar licenças na renovação.", "responsavel": "Comunicação / TI", "evidencia": "Console de licenças", "prazo": "até 04/2027"},
+    {"horizonte": "longo", "prioridade": "P2", "contrato": "031/2024/OM", "acao": "Estudo de migração da hospedagem do SaaS para o data center corporativo.", "responsavel": "Coordenadoria de TI / ETI / UGD", "evidencia": "Estudo técnico e econômico de migração", "prazo": "após inauguração do DC"}
+  ],
+
+  "conclusao": {
+    "respostas": [
+      {"pergunta": "Quais contratações parecem indispensáveis à missão do órgão?", "resposta": "A plataforma de fiscalização (031/2024/OM) e a conectividade das unidades remotas (015/2025/OM)."},
+      {"pergunta": "Quais despesas merecem revisão prioritária?", "resposta": "A fábrica de software (007/2026/OM), pela sobreposição com a sustentação do SaaS, e a locação de impressoras (019/2023/OM), pelo vencimento próximo."},
+      {"pergunta": "Quais contratos possuem oportunidades mais promissoras de redução?", "resposta": "007/2026/OM (consumo de UST), 019/2023/OM (parque e franquia) e 022/2026/OM (licenças), todos dependentes de medição."},
+      {"pergunta": "Quais serviços poderiam ser transformados em soluções corporativas?", "resposta": "Impressão, certificação digital, licenças de design e fábrica de software."},
+      {"pergunta": "Onde a ETI poderia exercer papel relevante?", "resposta": "Hospedagem consolidada e, conforme capacidade, demandas de desenvolvimento."},
+      {"pergunta": "Quais contratos deverão ser reavaliados em função do futuro data center corporativo?", "resposta": "012/2025/OM e o item de hospedagem do 031/2024/OM."},
+      {"pergunta": "Quais decisões dependem de estudos adicionais?", "resposta": "Migração de hospedagem e eventual absorção de demandas pela ETI."},
+      {"pergunta": "Quais oportunidades apresentam ganhos para todo o Governo?", "resposta": "Registro de preços corporativo de certificação e licenças, e padronização do modelo de fábrica de software."}
+    ],
+    "sintese": [
+      "O órgão mantém contratações essenciais bem caracterizadas, mas apresenta sobreposição relevante entre os instrumentos de software e oportunidades de dimensionamento em serviços de apoio.",
+      "Recomenda-se, no curto prazo, aprovar a matriz de responsabilidades de software, decidir a renovação da impressão com base em medição e sanear as inconsistências documentais; no médio e longo prazo, consolidar a hospedagem com a ETI e o data center corporativo."
+    ]
+  },
+
+  "inventario": [
+    {"arquivo": "Contrato 031-2024 Alfa (assinado).pdf", "contrato": "031/2024/OM", "tipo": "Contrato", "paginas": 38, "situacao": "Analisado", "obs": null},
+    {"arquivo": "1º Termo Aditivo 031-2024 reajuste.pdf", "contrato": "031/2024/OM", "tipo": "Aditivo", "paginas": 4, "situacao": "Analisado", "obs": null},
+    {"arquivo": "Contrato 012-2025 ETI.pdf", "contrato": "012/2025/OM", "tipo": "Contrato", "paginas": 22, "situacao": "Analisado", "obs": null},
+    {"arquivo": "1º Aditivo 012-2025 supressão.pdf", "contrato": "012/2025/OM", "tipo": "Aditivo", "paginas": 3, "situacao": "Analisado", "obs": null},
+    {"arquivo": "Contrato 007-2026 Beta.pdf", "contrato": "007/2026/OM", "tipo": "Contrato", "paginas": 27, "situacao": "Analisado", "obs": null},
+    {"arquivo": "Contrato 019-2023 Gama.pdf", "contrato": "019/2023/OM", "tipo": "Contrato", "paginas": 18, "situacao": "Analisado", "obs": null},
+    {"arquivo": "2º Aditivo 019-2023 prorrogação.pdf", "contrato": "019/2023/OM", "tipo": "Aditivo", "paginas": 3, "situacao": "Analisado", "obs": "1º aditivo não recebido"},
+    {"arquivo": "Contrato 015-2025 Zeta.pdf", "contrato": "015/2025/OM", "tipo": "Contrato", "paginas": 14, "situacao": "Analisado", "obs": null},
+    {"arquivo": "1º Aditivo 015-2025 prorrogação.pdf", "contrato": "015/2025/OM", "tipo": "Aditivo", "paginas": 2, "situacao": "Analisado", "obs": "Número divergente"},
+    {"arquivo": "Contrato 022-2026 Épsilon.pdf", "contrato": "022/2026/OM", "tipo": "Contrato", "paginas": 11, "situacao": "Analisado", "obs": null},
+    {"arquivo": "Contrato 004-2025 Delta.pdf", "contrato": "004/2025/OM", "tipo": "Contrato", "paginas": 9, "situacao": "Analisado", "obs": null},
+    {"arquivo": "TR fábrica de software.pdf", "contrato": "007/2026/OM", "tipo": "Termo de referência", "paginas": 41, "situacao": "Não contratual", "obs": "Usado como contexto"},
+    {"arquivo": "digitalizacao_0041.pdf", "contrato": null, "tipo": "Desconhecido", "paginas": 6, "situacao": "Ilegível", "obs": "Digitalização sem OCR aproveitável"}
+  ],
+
+  "documentos_solicitados": [
+    {"contrato": "031/2024/OM", "documento": "Relatório de consumo do banco de horas e de usuários ativos.", "finalidade": "Confirmar dimensionamento e delimitar escopo frente ao 007/2026/OM."},
+    {"contrato": "012/2025/OM", "documento": "Relatório de consumo de recursos (6 meses) e inventário de aplicações.", "finalidade": "Avaliar ajuste de capacidade e migração."},
+    {"contrato": "007/2026/OM", "documento": "Ordens de serviço emitidas e estimativa de UST.", "finalidade": "Verificar sobreposição e necessidade."},
+    {"contrato": "019/2023/OM", "documento": "1º termo aditivo e bilhetagem de 12 meses.", "finalidade": "Completar o histórico e decidir prorrogação."},
+    {"contrato": "—", "documento": "Nova cópia legível de digitalizacao_0041.pdf.", "finalidade": "Garantir que nenhum contrato foi omitido."}
+  ],
+
+  "base_normativa": [
+    "Lei Federal nº 14.133/2021 — licitações e contratos administrativos.",
+    "Lei Federal nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais.",
+    "Normas estaduais de governança digital e contratações de TIC, a confirmar vigência e alcance para cada caso."
+  ]
+}

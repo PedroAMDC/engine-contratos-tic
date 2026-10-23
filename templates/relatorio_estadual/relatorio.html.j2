@@ -1,0 +1,244 @@
+{%- set m = d.meta -%}
+{%- set e = d.est -%}
+{%- set p = e.panorama -%}
+{%- macro cab(sobre, titulo, desc=none) -%}
+<div class="parte-cab"><small>{{ sobre }}</small><h2>{{ titulo }}</h2>{% if desc %}<p>{{ desc }}</p>{% endif %}</div>
+{%- endmacro -%}
+{%- macro pot(x) -%}<span class="nivel-t {{ x|slug }}">{{ x }}</span>{%- endmacro -%}
+{%- macro situ(s) -%}{% if s == "Vencido nos documentos" %}<span class="dias urg">vencido nos docs</span>{% elif s == "Vigente" %}<span class="dias ok">vigente</span>{% else %}<span class="dias ok">—</span>{% endif %}{%- endmacro -%}
+{%- macro eco(a) -%}
+{%- if a.economia.tipo == "calculada" -%}<b>{{ a.economia.valor|brl_curto }}</b> <span class="muted">(calculada)</span>
+{%- elif a.economia.tipo == "estimada" -%}<b>{{ a.economia.valor|brl_curto }}</b> <span class="muted">(estimada)</span>
+{%- else -%}<span class="muted">a medir</span>{%- endif -%}
+{%- endmacro -%}
+{%- macro achado(a, compacto=false) -%}
+<div class="achado-est {{ a.potencial|slug }}">
+  <div class="ae-cab"><span class="ae-id">{{ a.id }}</span><span class="ae-tipo">{{ a.tipo }}</span><span class="ae-pot">Potencial {{ pot(a.potencial) }} · confiança {{ a.confianca|lower }}</span></div>
+  <div class="ae-tit">{{ a.titulo }}</div>
+  <div class="ae-corpo">
+    <div>
+      <p>{{ a.descricao }}</p>
+      <p><b>Recomendação.</b> {{ a.recomendacao }}</p>
+      {% if not compacto %}<p class="small muted"><b>Condição:</b> {{ a.condicao }} · <b>Janela:</b> {{ a.janela }} · <b>Responsável:</b> {{ a.responsavel }}</p>{% endif %}
+    </div>
+    <div class="ae-lado">
+      <div><div class="l">Órgãos</div><div class="v">{{ a.orgaos|length }} · {{ a.orgaos|join(", ")|truncate(90) }}</div></div>
+      <div><div class="l">Contratos centrais</div><div class="v">{{ a.n_contratos }} · {{ a.valor_envolvido|brl_curto }}{% if a.valor_anual_envolvido %} <span class="muted">· {{ a.valor_anual_envolvido|brl_curto }}/ano</span>{% endif %}{% if a.n_referencia %}<br><span class="muted small">+ {{ a.n_referencia }} de referência</span>{% endif %}</div></div>
+      <div><div class="l">Economia</div><div class="v">{{ eco(a) }}</div></div>
+    </div>
+  </div>
+  {% if a.economia.tipo != "não estimada" and not compacto %}<div class="small muted">Premissa: {{ a.economia.premissa }}</div>{% endif %}
+  <div class="small muted">Base: {{ a.evid_txt|join("; ")|truncate(260) }}</div>
+</div>
+{%- endmacro -%}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Resumo executivo — contratos de TIC do Estado</title>
+<style>
+{{ css|safe }}
+@page { @top-left { content: "Resumo executivo · Contratos de TIC do {{ P.ente.poder_curto }} · ref. {{ m.data_referencia|data }}"; } }
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <div class="capa-faixa">
+    <img class="logo-faixa" src="{{ P.relatorio.logo_faixa }}" alt="{{ P.relatorio.logo_faixa_alt }}">
+    <div class="emissor"><small>Elaborado pela</small>{{ P.emissor.nome_capa[0] }}<br>{{ P.emissor.nome_capa[1:]|join(" ") }} <b>{{ P.emissor.sigla }}</b></div>
+  </div>
+  <img class="capa-brasao" src="{{ P.relatorio.brasao }}" alt="">
+  <div class="classificacao">{{ m.classificacao }}</div>
+  <div class="capa-meio">
+    <div class="sobre">Resumo executivo estadual</div>
+    <h1>Contratos de <b>Tecnologia da Informação</b><br>do Poder Executivo</h1>
+    <div class="capa-orgao">
+      <div class="sigla">{{ P.ente.sigla }}</div>
+      <div class="nome">Redundâncias, consolidação e oportunidades de racionalização em {{ p.orgaos }} órgãos e entidades</div>
+    </div>
+  </div>
+  <div class="capa-base">
+    <div><b>Data de referência</b>{{ m.data_referencia|data }}</div>
+    <div><b>Versão</b>{{ m.versao }} · emitida em {{ m.data_emissao|data }}</div>
+    <div><b>Finalidade</b>{{ m.finalidade }}</div>
+  </div>
+</section>
+
+{# ============================================================ SUMÁRIO EXECUTIVO #}
+<section>
+  {{ cab("Sumário executivo", "O Estado em uma página") }}
+  <div class="manchete">{{ e.manchete }}</div>
+  <div class="kpis">
+    <div class="kpi"><div class="l">Contratos analisados</div><div class="v">{{ p.contratos }}</div><div class="s">{{ p.orgaos }} órgãos · {{ p.fornecedores }} fornecedores</div></div>
+    <div class="kpi"><div class="l">Valor global</div><div class="v">{{ p.valor_total|brl_curto }}</div><div class="s">soma dos contratos recebidos</div></div>
+    <div class="kpi"><div class="l">{{ P.estatal_ti.sigla }} como contratada</div><div class="v">{{ p.estatal_ti.contratos }}</div><div class="s">{{ p.estatal_ti.valor|brl_curto }} ({{ p.estatal_ti.pct|round|int }}%) · {{ p.estatal_ti.orgaos }} órgãos</div></div>
+    <div class="kpi kpi-alerta"><div class="l">Economia identificada</div><div class="v">{{ (e.economia_calculada + e.economia_estimada)|brl_curto }}</div><div class="s">tetos condicionados às premissas · {{ e.achados_a_medir }} achados ainda a medir</div></div>
+  </div>
+  <h4>O que a liderança precisa saber</h4>
+  <ul class="lista">{% for x in e.mensagens_chave %}<li>{{ x }}</li>{% endfor %}</ul>
+
+  <h3>As 10 maiores oportunidades</h3>
+  <table class="top">
+    <thead><tr><th style="width:12mm">Ref.</th><th>Oportunidade</th><th style="width:22mm">Órgãos</th><th style="width:26mm" class="right">Contratos centrais</th><th style="width:24mm" class="right">Economia</th><th style="width:15mm">Potencial</th></tr></thead>
+    <tbody>
+    {% for a in e.top %}
+      <tr><td class="forte">{{ a.id }}</td><td><strong>{{ a.titulo }}</strong><br><span class="muted small">{{ a.por_que }}</span></td><td class="num">{{ a.orgaos|length }}</td><td class="right num">{{ a.valor_envolvido|brl_curto }}</td><td class="right">{{ eco(a) }}</td><td>{{ pot(a.potencial) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="small muted">Economia "calculada": diferença verificável sobre preços e quantidades dos próprios contratos. "Estimada": teto que só se realiza se a premissa do achado for confirmada (equivalência técnica, migração viável, preço de ata) — o ganho efetivo tende a ser menor. "A medir": depende de dados de uso que os órgãos precisam fornecer. "Contratos centrais" são o objeto do achado; contratos citados apenas como comparação de preço ou de escopo não entram no valor. Valores somam prazos diferentes e não são despesa anual.</p>
+</section>
+
+{# ============================================================ PANORAMA #}
+<section class="parte">
+  {{ cab("Panorama", "Para onde vai o dinheiro de TIC do Estado") }}
+  {% for par in e.panorama_texto.split("\n\n") %}<p>{{ par }}</p>{% endfor %}
+  {% set maxm = p.por_macro.values()|map(attribute="valor")|max %}
+  <h4>Valor por macrocategoria</h4>
+  <div class="barras">
+    {% for nome, v in p.por_macro.items() if v.contratos %}
+    <div class="barra"><div class="rot">{{ nome }} <span class="muted">({{ v.contratos }} contratos · {{ v.orgaos }} órgãos)</span></div><div class="trilho"><div class="preenche" style="width: {{ pct(v.valor, maxm) }}%"></div></div><div class="val">{{ v.valor|brl_curto }} <small>{{ pct(v.valor, p.valor_total)|round|int }}%</small></div></div>
+    {% endfor %}
+  </div>
+
+  <h4 style="margin-top:5mm">Subcategorias com maior valor</h4>
+  <table>
+    <thead><tr><th>Subcategoria</th><th>Macrocategoria</th><th class="right">Contratos</th><th class="right">Órgãos</th><th class="right">Valor</th></tr></thead>
+    <tbody>
+    {% set subs = [] %}{% for nome, v in p.por_macro.items() %}{% for s, x in v.por_sub.items() %}{% set _ = subs.append({"s": s, "m": nome, "x": x}) %}{% endfor %}{% endfor %}
+    {% for r in (subs|sort(attribute="x.valor", reverse=true))[:10] %}
+      <tr><td class="forte">{{ r.s }}</td><td class="small">{{ r.m }}</td><td class="right num">{{ r.x.contratos }}</td><td class="right num">{{ r.x.orgaos }}</td><td class="right num">{{ r.x.valor|brl_curto }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="parte">
+  {{ cab("Panorama", "Órgãos, fornecedores e atas") }}
+  <h4>Mapa órgão × macrocategoria (valor dos contratos)</h4>
+  {% set macros = p.por_macro.keys()|list %}
+  {% set linhas = [] %}{% for org, v in p.orgao_x_macro.items() %}{% set _ = linhas.append({"o": org, "v": v, "t": v.values()|sum}) %}{% endfor %}
+  {% set maxc = linhas|map(attribute="t")|max %}
+  <table class="mapa-calor">
+    <thead><tr><th>Órgão</th>{% for mm in macros %}<th class="right">{{ mm.split(" ")[0] }}</th>{% endfor %}<th class="right">Total</th></tr></thead>
+    <tbody>
+    {% for l in linhas|sort(attribute="t", reverse=true) %}
+      <tr><td class="forte">{{ l.o }}</td>{% for mm in macros %}{% set val = l.v.get(mm, 0) %}<td class="right num cal" style="background: rgba(47,90,143,{{ (val / maxc * 0.9 + (0.06 if val else 0))|round(2) }}); color: {{ '#fff' if val / maxc > 0.45 else 'inherit' }}">{{ val|brl_curto if val else "—" }}</td>{% endfor %}<td class="right num forte">{{ l.t|brl_curto }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="grid-2" style="margin-top:4mm">
+    <div>
+      <h4>Fornecedores presentes em mais órgãos</h4>
+      <table>
+        <thead><tr><th>Fornecedor</th><th class="right">Órgãos</th><th class="right">Valor</th></tr></thead>
+        <tbody>{% for f in e.fornecedores %}<tr><td class="small">{{ f.nome|truncate(42) }}</td><td class="right num">{{ f.n_orgaos }}</td><td class="right num">{{ f.valor|brl_curto }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+    <div>
+      <h4>Atas mais usadas</h4>
+      <table>
+        <thead><tr><th>Ata</th><th class="right">Órgãos</th><th class="right">Valor</th></tr></thead>
+        <tbody>{% for a in e.atas %}<tr><td class="small">{{ a.ata|truncate(40) }}</td><td class="right num">{{ a.orgaos|length }}</td><td class="right num">{{ a.valor|brl_curto }}</td></tr>{% endfor %}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% if e.mapa %}
+<section class="parte">
+  {{ cab("Panorama", "Onde estão os dados do Governo", "Levantamento preliminar a partir dos contratos, para o mapa da infraestrutura de armazenamento de dados" ~ ((" pedido pela " ~ P.relatorio.demandante_mapa) if P.relatorio.demandante_mapa else "") ~ ". Detalhe por órgão, com o que falta informar, na planilha que acompanha este resumo.") }}
+  <div class="kpis">
+    <div class="kpi"><div class="l">Ambientes identificados</div><div class="v">{{ e.mapa.ambientes }}</div><div class="s">em contratos de infraestrutura, rede e {{ P.estatal_ti.sigla }}</div></div>
+    <div class="kpi"><div class="l">Custo anual identificado</div><div class="v">{{ e.mapa.custo_total|brl_curto }}</div><div class="s">o que os contratos pagam pelos ambientes</div></div>
+    <div class="kpi"><div class="l">Órgãos com ambiente próprio</div><div class="v">{{ e.mapa.proprios|length }}</div><div class="s">candidatos à consolidação</div></div>
+    <div class="kpi kpi-alerta"><div class="l">Órgãos sem ambiente nos contratos</div><div class="v">{{ e.mapa.sem_ambiente|length }}</div><div class="s">precisam informar onde estão os dados</div></div>
+  </div>
+  <table>
+    <thead><tr><th>Tipo de ambiente</th><th class="right">Ambientes</th><th class="right">Órgãos</th><th class="right">Custo anual identificado</th></tr></thead>
+    <tbody>{% for x in e.mapa.por_tipo|sort(attribute="custo_anual", reverse=true) %}<tr><td class="forte">{{ x.tipo }}</td><td class="right num">{{ x.ambientes }}</td><td class="right num">{{ x.orgaos }}</td><td class="right num">{{ x.custo_anual|brl_curto if x.custo_anual else "—" }}</td></tr>{% endfor %}</tbody>
+  </table>
+  <div class="grid-2">
+    <div class="caixa"><h4>Dados em vários ambientes ao mesmo tempo</h4><p>{{ e.mapa.multiplos|join(", ") }}</p><h4>Só no datacenter {{ P.estatal("de") }}</h4><p>{{ e.mapa.so_estatal_ti|join(", ") or "—" }}</p></div>
+    <div class="caixa"><h4>Com ambiente próprio</h4><p>{{ e.mapa.proprios|join(", ") }}</p><h4>Sem ambiente identificado nos contratos</h4><p>{{ e.mapa.sem_ambiente|join(", ") or "—" }}</p></div>
+  </div>
+  <p class="small muted">Limites: o levantamento cobre os contratos de TIC enviados. Infraestrutura própria sem contrato, energia e climatização contratadas fora da área de TIC e o rateio interno {{ P.estatal("de") }} precisam ser informados pelos órgãos. Só {{ e.mapa.com_endereco }} ambientes têm endereço no contrato.</p>
+</section>
+{% endif %}
+
+{# ============================================================ TEMAS #}{% for t in e.temas %}
+<section class="parte">
+  {{ cab("Tema " ~ t.n, t.nome) }}
+  <p class="lead">{{ t.abertura }}</p>
+  {% for par in t.diagnostico.split("\n\n") %}<p>{{ par }}</p>{% endfor %}
+  {% for mm in t.macro %}
+  <div class="kpis" style="grid-template-columns: repeat(3,1fr)">
+    <div class="kpi"><div class="l">Contratos</div><div class="v">{{ mm.contratos }}</div></div>
+    <div class="kpi"><div class="l">Órgãos</div><div class="v">{{ mm.orgaos }}</div></div>
+    <div class="kpi"><div class="l">Valor</div><div class="v">{{ mm.valor|brl_curto }}</div></div>
+  </div>
+  {% endfor %}
+
+  <h4>Achados</h4>
+  {% for a in t.achados %}{{ achado(a) }}{% endfor %}
+  {% if t.outros %}<p class="small muted">Outros achados do tema, de menor potencial: {% for a in t.outros %}{{ a.id }} — {{ a.titulo }}{% if not loop.last %}; {% endif %}{% endfor %}.</p>{% endif %}
+
+  {% if t.produtos %}
+  <h4>Mesmo produto, órgãos diferentes</h4>
+  <table>
+    <thead><tr><th>Produto</th><th>Métrica</th><th class="right">Órgãos</th><th class="right">Mínimo</th><th class="right">Mediana</th><th class="right">Máximo</th><th class="right">Dispersão</th></tr></thead>
+    <tbody>{% for pr in t.produtos %}<tr><td class="small forte">{{ pr.produto|truncate(48) }}</td><td class="small">{{ pr.metrica }}</td><td class="right num">{{ pr.n_orgaos }}</td><td class="right num">{{ pr.preco_min|brl("—") }}</td><td class="right num">{{ pr.preco_mediano|brl("—") }}</td><td class="right num">{{ pr.preco_max|brl("—") }}</td><td class="right num">{{ pr.dispersao ~ "×" if pr.dispersao else "—" }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% endif %}
+
+  {% if t.quadro %}
+  <h4>Contratos de referência</h4>
+  <table>
+    <thead><tr><th style="width:18mm">Órgão</th><th>Contratada · objeto</th><th class="right" style="width:24mm">Valor</th><th style="width:22mm">Situação</th></tr></thead>
+    <tbody>{% for c in t.quadro %}<tr><td class="forte">{{ c.orgao }}</td><td class="small"><strong>{{ c.contratada|truncate(50) }}</strong> · {{ c.objeto }}</td><td class="right num">{{ c.valor|brl_curto }}</td><td>{{ situ(c.situacao) }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% endif %}
+</section>
+{% endfor %}
+
+{# ============================================================ CALENDÁRIO + PLANO #}
+<section class="parte">
+  {{ cab("Execução", "Janelas de decisão e plano de ação estadual") }}
+  <p>{{ e.calendario_texto }}</p>
+  <div class="kpis">
+    <div class="kpi kpi-alerta"><div class="l">Vencem em 6 meses</div><div class="v">{{ e.calendario.vencem_6m|length }}</div><div class="s">{{ e.calendario.vencem_6m|map(attribute="valor")|reject("none")|sum|brl_curto }}</div></div>
+    <div class="kpi"><div class="l">Em 6 a 12 meses</div><div class="v">{{ e.calendario.vencem_12m|length }}</div><div class="s">{{ e.calendario.vencem_12m|map(attribute="valor")|reject("none")|sum|brl_curto }}</div></div>
+    <div class="kpi"><div class="l">Em 12 a 24 meses</div><div class="v">{{ e.calendario.vencem_24m|length }}</div><div class="s">{{ e.calendario.vencem_24m|map(attribute="valor")|reject("none")|sum|brl_curto }}</div></div>
+    <div class="kpi"><div class="l">Vencidos nos documentos</div><div class="v">{{ e.calendario.vencidos_nos_documentos|length }}</div><div class="s">aditivo não enviado?</div></div>
+  </div>
+
+  {% for h, titulo in [("curto","Curto prazo · até 90 dias"),("medio","Médio prazo · 3 a 12 meses"),("longo","Longo prazo · acima de 12 meses")] %}
+  {% set acoes = e.plano|selectattr("horizonte","equalto",h)|list %}
+  {% if acoes %}
+  <div class="horizonte"><div class="horizonte-cab"><b>{{ titulo }}</b></div>
+    <table><thead><tr><th>Ação</th><th style="width:30mm">Responsável</th><th style="width:26mm">Achados</th><th style="width:22mm">Prazo</th></tr></thead>
+    <tbody>{% for x in acoes %}<tr><td>{{ x.acao }}</td><td class="small">{{ x.responsavel }}</td><td class="small">{{ x.achados|join(", ") }}</td><td class="small">{{ x.prazo }}</td></tr>{% endfor %}</tbody></table>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+  <div class="sintese"><b class="t">CONCLUSÃO</b>{% for par in e.conclusao.split("\n\n") %}<p>{{ par }}</p>{% endfor %}</div>
+</section>
+
+<section class="fluxo">
+  {{ cab("Respaldo", "Premissas, método e verificação") }}
+  <ul class="lista">{% for x in e.premissas %}<li>{{ x }}</li>{% endfor %}</ul>
+  <h4>Como foi feito</h4>
+  <ul class="lista small">
+    <li>Leitura integral de todos os contratos e aditivos enviados pelos órgãos (texto digital e reconhecimento de texto em digitalizações), com uma ficha padronizada por contrato e citação literal da fonte conferida automaticamente.</li>
+    <li>O mesmo contrato guardado em pastas de órgãos diferentes foi contado uma única vez (número + CNPJ + órgão contratante).</li>
+    <li>Totais, preços unitários, dispersões e economias calculadas foram produzidos por cálculo sobre a base, não por estimativa redacional.</li>
+    <li>Cada achado de maior potencial foi submetido a dois revisores independentes encarregados de refutá-lo; achados refutados foram corrigidos, rebaixados ou excluídos.{% if e.checagem %} O texto final passou por checagem independente de fatos ({{ e.checagem.afirmacoes|length }} afirmações).{% endif %}</li>
+    <li>A planilha "Base de contratos de TIC do {{ P.ente.poder_curto }}" acompanha este resumo e traz cada contrato, item e preço com a fonte.</li>
+  </ul>
+</section>
+
+</body>
+</html>

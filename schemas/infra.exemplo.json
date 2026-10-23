@@ -1,0 +1,19 @@
+{
+  "id": "ORG-A-G07",
+  "pagador": "ORG-A",
+  "relevante": true,
+  "ambientes": [
+    {
+      "tipo": "Datacenter {{ P.estatal('de') }} | Outro datacenter governamental | Nuvem pública | Nuvem privada de terceiros | Colocation | Ambiente próprio do órgão | Não identificado",
+      "provedor": "{{ P.estatal_ti.sigla }} (Oracle Cloud@Customer)",
+      "local": "Datacenter {{ P.estatal('de') }} em {{ P.ente.capital }}",
+      "endereco": null,
+      "componentes": ["hospedagem", "servidores", "armazenamento", "backup", "banco de dados"],
+      "custo_mensal": 157500.00,
+      "custo_anual": 1890000.00,
+      "base_custo": "Itens de nuvem privada e backup da planilha de preços (cl. 3.1), valores mensais × 12.",
+      "fonte": {"doc": "D07", "pagina": 4, "trecho": "trecho literal"}
+    }
+  ],
+  "lacunas": ["Endereço do datacenter não consta do contrato.", "Rateio de energia e climatização não informado."]
+}

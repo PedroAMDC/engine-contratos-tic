@@ -1,0 +1,11 @@
+{
+  "manchete": "Duas frases: retrato do Estado e a principal oportunidade.",
+  "mensagens_chave": ["Mensagem curta 1.", "Mensagem curta 2.", "Mensagem curta 3."],
+  "top_oportunidades": [{"achado": "T3-01", "por_que": "Uma frase."}],
+  "panorama_texto": "Dois parágrafos.",
+  "temas": [{"n": "1", "abertura": "Um parágrafo.", "achados_destaque": ["T1-01", "T1-02"]}],
+  "plano": [{"horizonte": "curto | medio | longo", "acao": "Ação concreta.", "responsavel": "{{ P.emissor.sigla }} | {{ P.estatal_ti.sigla }} | {{ P.orgao_central.area_aquisicoes }} | Órgãos", "achados": ["T3-01"], "prazo": "até 03/2027"}],
+  "calendario_texto": "Um parágrafo.",
+  "premissas": ["Limite 1.", "Limite 2."],
+  "conclusao": "Um ou dois parágrafos."
+}

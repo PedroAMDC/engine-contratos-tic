@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 80" width="360" height="80">
+  <rect x="4" y="10" width="60" height="60" rx="10" fill="none" stroke="#0f2a4a" stroke-width="4"/>
+  <text x="34" y="51" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f2a4a" text-anchor="middle">EX</text>
+  <text x="80" y="36" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f2a4a">SEGES</text>
+  <text x="80" y="60" font-family="Arial, sans-serif" font-size="15" fill="#0f2a4a" fill-opacity=".8">Governo do Estado Exemplo</text>
+</svg>
